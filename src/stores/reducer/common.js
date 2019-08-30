@@ -11,6 +11,11 @@ export default function commonReducer(state = initialState, action) {
         ...state,
         isLoading: false,
       };
+    case ActionTypes.LOADING_START:
+      return {
+        ...state,
+        isLoading: true,
+      };
     default:
       return state;
   }

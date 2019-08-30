@@ -31,7 +31,7 @@
       "id": "a1",
       "parentAccount": "Big Iron",
       "parentOpportunity": "Opportunity 1",
-      "ActivityType": "None",
+      "activityType": "None",
       "desciption": "",
       "currentStatus": "Not started",
       "created": "6/7/2016",

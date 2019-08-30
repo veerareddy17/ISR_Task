@@ -12,8 +12,8 @@ export default class ApiService {
     return response;
   };
 
-  static fetchOpportunities = () => {
-    var response = {success: false, data: null};
+  static fetchOpportunities = async () => {
+    var response = await {success: false, data: null};
     response.data = [
       {
         id: 'a1',
@@ -37,18 +37,24 @@ export default class ApiService {
         id: 'b4',
         Opportunities: 2,
         estmatedToatl: 400,
-        user: 'customer',
       },
     ];
 
-    return response;
+    return await response;
   };
 
-  static fetchOpportunityDetails = id => {
-    var response = {success: false, data: null};
+  static fetchOpportunityDetails = async id => {
+    var response = await {success: false, data: null};
     response.data = data[0];
 
     console.log('service data... is=>', response);
+    return await response;
+  };
+
+  static createOpportunityContact = async contctData => {
+    var response = await {success: false, data: null};
+    response.success = await true;
+    response.data = await contctData;
     return response;
   };
 }
