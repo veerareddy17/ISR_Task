@@ -10,14 +10,20 @@ export default class Lead extends Component {
 
     return (
       <Container>
-        <View style={{height: 60, backgroundColor: 'yellow', elevation: 4}}>
+        <View
+          style={{
+            height: 60,
+            backgroundColor: 'rgb(255,217,25)',
+            elevation: 4,
+          }}>
           <Header>
             <View style={styles.titleView}>
-              <Text>{navigation.state.routeName}</Text>
+              <Text style={styles.headerText}>
+                {navigation.state.routeName}
+              </Text>
             </View>
             <View style={styles.rightView}>
               <Image source={Images.useravatar} style={{marginRight: 5}} />
-              <Text>My Account</Text>
             </View>
           </Header>
         </View>
@@ -31,6 +37,10 @@ var styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   rightView: {
     alignItems: 'center',

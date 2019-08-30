@@ -14,24 +14,32 @@ import Header from '../header';
 import {
   fetchOpportunities,
   selectedOpportunity,
+  createNewOpportunity,
 } from '../../action/opportunity';
 import {connect} from 'react-redux';
 import Images from '../../assets/index';
 
 class Opportunities extends Component {
   static navigationOptions = {header: null};
-  componentDidMount() {
+  async componentDidMount() {
     console.log('fetching opp');
-    this.props.fetchOpportunities();
+    await this.props.fetchOpportunities();
   }
 
-  handleSelections = opportunities => {
-    this.props.selectedOpportunity(opportunities.id);
+  handleSelections = async item => {
+    console.log('what i ma getting ...=>', item);
+    await this.props.selectedOpportunity(item.id);
     this.props.navigation.navigate('EditOpportunity', {
-      title: opportunities.opportunities,
+      title: 'Opportunity' + item.id,
     });
   };
 
+  createOpportunity = () => {
+    this.props.createNewOpportunity(this.props.id);
+    this.props.navigation.navigate('EditOpportunity', {
+      title: 'CreateOpportunity' + '',
+    });
+  };
   render() {
     const {navigation} = this.props;
 
@@ -39,14 +47,20 @@ class Opportunities extends Component {
 
     return (
       <Container>
-        <View style={{height: 60, backgroundColor: 'yellow', elevation: 4}}>
+        <View
+          style={{
+            height: 60,
+            backgroundColor: 'rgb(255,217,25)',
+            elevation: 4,
+          }}>
           <Header>
             <View style={styles.titleView}>
-              <Text>{navigation.state.routeName}</Text>
+              <Text style={styles.headerText}>
+                {navigation.state.routeName}
+              </Text>
             </View>
             <View style={styles.rightView}>
               <Image source={Images.useravatar} style={{marginRight: 5}} />
-              <Text>My Account</Text>
             </View>
           </Header>
         </View>
@@ -66,7 +80,9 @@ class Opportunities extends Component {
           ) : (
             <Card>
               <FlatList
-                data={this.props.opportunityList}
+                extraData={this.props.data}
+                data={this.props.data.opportunityList}
+                keyExtractor={(item, index) => 'key' + index}
                 renderItem={({item}) => (
                   <TouchableWithoutFeedback
                     onPress={() => this.handleSelections(item)}>
@@ -98,10 +114,10 @@ class Opportunities extends Component {
         <View style={{flex: 1}}>
           <Fab
             direction="up"
-            containerStyle={{}}
-            style={{backgroundColor: 'yellow'}}
+            // containerStyle={{}}
+            style={{backgroundColor: 'rgb(255,217,25)'}}
             position="bottomRight"
-            onPress={() => {}}>
+            onPress={this.createOpportunity}>
             <Text style={{fontSize: 25, color: 'black'}}>+</Text>
           </Fab>
         </View>
@@ -114,6 +130,10 @@ var styles = StyleSheet.create({
   textStyle: {
     fontWeight: 'bold',
     color: 'grey',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
   titleView: {
     flex: 3,
@@ -131,12 +151,13 @@ var styles = StyleSheet.create({
 const mapStateToProps = state => {
   console.log('state value', state);
   return {
-    opportunityList: state.opportunityReducer.opportunityList,
+    data: state.opportunityReducer,
+    id: state.opportunityReducer.opportunityId,
     isLoading: state.common.isLoading,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {fetchOpportunities, selectedOpportunity},
+  {fetchOpportunities, selectedOpportunity, createNewOpportunity},
 )(Opportunities);

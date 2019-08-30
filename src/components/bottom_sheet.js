@@ -8,6 +8,8 @@ import {
   Content,
   DatePicker,
   Card,
+  Footer,
+  FooterTab,
 } from 'native-base';
 import moment from 'moment';
 import {connect} from 'react-redux';
@@ -37,7 +39,7 @@ export default class BottomSheet extends React.Component {
 
   setDate(newDate) {
     console.log('onchanges date iss.....=>', newDate);
-    var date = moment(date).format('YYYY/MM/DD');
+    var date = moment(newDate).format('YYYY/MM/DD');
     console.log('changes the  date iss.....=>', date);
     this.setState({date: date});
   }
@@ -111,11 +113,6 @@ export default class BottomSheet extends React.Component {
                 />
               </Item>
             </View>
-            <Button full={true} style={{backgroundColor: 'blue'}}>
-              <Text value={'Save'} style={{color: 'black', fontWeight: 'bold'}}>
-                edit
-              </Text>
-            </Button>
           </Card>
         </Content>
       </View>
@@ -139,11 +136,33 @@ export default class BottomSheet extends React.Component {
 
         {this.renderItem()}
 
-        <TouchableOpacity
-          onPress={() => this.handleSubmit()}
-          style={styles.footer}>
-          <Text style={styles.footerText}>Save</Text>
-        </TouchableOpacity>
+        <Footer>
+          <FooterTab style={{backgroundColor: 'white'}}>
+            <Button
+              success
+              full={true}
+              style={{
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
+              onPress={this.handleSubmit}>
+              <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
+            </Button>
+            <Button
+              full={true}
+              danger
+              style={{
+                // backgroundColor: 'yellow',
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
+              onPress={() => {}}>
+              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </View>
     );
   }

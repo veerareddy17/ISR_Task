@@ -11,12 +11,15 @@ import {
 import AppContainer from './src/navigation/router';
 import store from './src/stores/index';
 import {Provider} from 'react-redux';
+import {Root} from 'native-base';
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <Root>
+          <AppContainer />
+        </Root>
       </Provider>
     );
   }

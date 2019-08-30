@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 import React, {Component} from 'react';
 import {
   Container,
@@ -9,9 +9,13 @@ import {
   Content,
   Footer,
   FooterTab,
+  Toast,
 } from 'native-base';
 import {connect} from 'react-redux';
-import {OpportunityContactEditAction} from '../../../action/opportunity';
+import {
+  OpportunityContactEditAction,
+  createOpportunityContactAction,
+} from '../../../action/opportunity';
 
 class Contact extends Component {
   state = {
@@ -22,74 +26,126 @@ class Contact extends Component {
   };
 
   componentDidMount() {
-    const contact = this.props.selectedOpportunityCard.contact;
-    this.setState({
-      firstName: contact.firstName,
-      lastName: contact.lastName,
-      email: contact.email,
-      phoneNumber: contact.phoneNumber,
-    });
+    var entry = this.props.selectedOpportunityCard.selectedOpportunity;
+    var name;
+    var countIndices = 0;
+    for (name in entry) {
+      if (name === 'contact') {
+        ++countIndices;
+      }
+    }
+    if (countIndices >= 1) {
+      const contact = this.props.selectedOpportunityCard.selectedOpportunity
+        .contact;
+      this.setState({
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        email: contact.email,
+        phoneNumber: contact.phoneNumber,
+      });
+    }
   }
 
-  handleOnSubmit = () => {
-    const contactData = this.props.selectedOpportunityCard.contact;
-    const {id, ...statedata} = contactData;
-    this.props.OpportunityContactEditAction(this.state);
+  handleOnSubmit = async () => {
+    if (this.props.selectedOpportunityCard.opportunitState) {
+      const contactData = this.props.selectedOpportunityCard.selectedOpportunity
+        .contact;
+      const {id, ...statedata} = contactData;
+      this.props.OpportunityContactEditAction(this.state);
+      return;
+    }
+    await this.props.createOpportunityContactAction(this.state);
+    Toast.show({
+      text: 'create contact',
+      buttonText: 'Okay',
+      type: 'success',
+      position: 'center',
+    });
+    // this.props.navigation.navigate('Tab');
+
+    //create new opportunity action here
   };
   render() {
+    console.log('common reducer is.....=>', this.props.commonReducer.isLoading);
     return (
       <Container>
-        <Content>
-          <View style={{flex: 1}}>
-            <Item floatingLabel style={styles.item}>
-              <Label style={styles.label}>firstName</Label>
-              <Input
-                placeholder={'Big Iron'}
-                style={styles.input}
-                value={this.state.firstName}
-                onChangeText={text => this.setState({firstName: text})}
-              />
-            </Item>
-            <Item floatingLabel style={styles.item}>
-              <Label style={styles.label}>lastName</Label>
-              <Input
-                placeholder={'Opportunity 1'}
-                style={styles.input}
-                value={this.state.lastName}
-                onChangeText={text => this.setState({lastName: text})}
-              />
-            </Item>
+        {this.props.commonReducer.isLoading ? (
+          <Content>
+            <View
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <ActivityIndicator />
+            </View>
+          </Content>
+        ) : (
+          <Content>
+            <View style={{flex: 1}}>
+              <Item floatingLabel style={styles.item}>
+                <Label style={styles.label}>First Name</Label>
+                <Input
+                  placeholder={'Big Iron'}
+                  style={styles.input}
+                  value={this.state.firstName}
+                  onChangeText={text => this.setState({firstName: text})}
+                />
+              </Item>
+              <Item floatingLabel style={styles.item}>
+                <Label style={styles.label}>Last Name</Label>
+                <Input
+                  placeholder={'Opportunity 1'}
+                  style={styles.input}
+                  value={this.state.lastName}
+                  onChangeText={text => this.setState({lastName: text})}
+                />
+              </Item>
 
-            <Item floatingLabel style={styles.item}>
-              <Label style={styles.label}>email</Label>
+              <Item floatingLabel style={styles.item}>
+                <Label style={styles.label}>Email</Label>
 
-              <Input
-                placeholder={'None'}
-                style={styles.input}
-                value={this.state.email}
-                onChangeText={text => this.setState({email: text})}
-              />
-            </Item>
+                <Input
+                  placeholder={'None'}
+                  style={styles.input}
+                  value={this.state.email}
+                  onChangeText={text => this.setState({email: text})}
+                />
+              </Item>
 
-            <Item floatingLabel style={styles.item}>
-              <Label style={styles.label}>phoneNumber</Label>
+              <Item floatingLabel style={styles.item}>
+                <Label style={styles.label}>Pnumber</Label>
 
-              <Input
-                placeholder={'Desciption'}
-                style={styles.input}
-                value={this.state.phoneNumber}
-                onChangeText={text => this.setState({phoneNumber: text})}
-              />
-            </Item>
-          </View>
-        </Content>
+                <Input
+                  placeholder={'Desciption'}
+                  style={styles.input}
+                  value={this.state.phoneNumber}
+                  onChangeText={text => this.setState({phoneNumber: text})}
+                />
+              </Item>
+            </View>
+          </Content>
+        )}
         <Footer>
-          <FooterTab>
+          <FooterTab style={{backgroundColor: 'white'}}>
             <Button
+              success
               full={true}
-              style={{backgroundColor: 'yellow'}}
+              style={{
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
               onPress={this.handleOnSubmit}>
               <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
+            </Button>
+            <Button
+              full={true}
+              danger
+              style={{
+                // backgroundColor: 'yellow',
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
+              onPress={() => this.props.navigation.navigate('Tab')}>
+              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -107,11 +163,12 @@ var styles = StyleSheet.create({
 const mapStateToProps = state => {
   console.log('state value', state);
   return {
-    selectedOpportunityCard: state.opportunityReducer.selectedOpportunity,
+    selectedOpportunityCard: state.opportunityReducer,
+    commonReducer: state.common,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {OpportunityContactEditAction},
+  {OpportunityContactEditAction, createOpportunityContactAction},
 )(Contact);

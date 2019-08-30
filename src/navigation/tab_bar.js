@@ -11,10 +11,11 @@ import Contact from '../components/screens/editOpportunityScreen/contact';
 const TabBar = createMaterialTopTabNavigator(
   {
     General: {screen: General},
-    Active: {screen: Active},
+    Activity: {screen: Active},
     Notes: {screen: Notes},
     Contact: {screen: Contact},
   },
+
   {
     tabBarOptions: {
       upperCaseLabel: false,
@@ -32,6 +33,9 @@ const TabBar = createMaterialTopTabNavigator(
         // height: 60,
         // flexDirection: 'row',
         // backgroundColor: 'grey',
+      },
+      style: {
+        backgroundColor: 'rgb(220,220,220)',
       },
     },
   },

@@ -14,37 +14,47 @@ import {
   FooterTab,
   Picker,
   DatePicker,
+  Toast,
 } from 'native-base';
 import {
   selectedOpportunity,
   OpportunityGeneralEditAction,
+  createOpportunityGeneralAction,
 } from '../../../action/opportunity';
 import {connect} from 'react-redux';
 
 class General extends Component {
   state = {
-    isLoading: true,
     title: '',
     details: '',
     opportunitiesType: '',
     closeDate: '',
     chooseDate: '',
     stage: '',
+    estimated: '',
   };
 
   componentDidMount() {
-    const general = this.props.selectedOpportunityCard.selectedOpportunity
-      .general;
-
-    this.setState({
-      title: general.title,
-      details: general.details,
-      opportunitiesType: general.opportunitiesType,
-      closeDate: general.closeDate,
-      estimated: general.estimated,
-      stage: general.stage,
-      isLoading: false,
-    });
+    var entry = this.props.selectedOpportunityCard.selectedOpportunity;
+    var name;
+    var countIndices = 0;
+    for (name in entry) {
+      if (name === 'general') {
+        ++countIndices;
+      }
+    }
+    if (countIndices >= 1) {
+      const general = this.props.selectedOpportunityCard.selectedOpportunity
+        .general;
+      this.setState({
+        title: general.title,
+        details: general.details,
+        opportunitiesType: general.opportunitiesType,
+        closeDate: general.closeDate,
+        estimated: general.estimated,
+        stage: general.stage,
+      });
+    }
   }
 
   setDate(newDate) {
@@ -52,127 +62,153 @@ class General extends Component {
   }
 
   handleOnSubmit = () => {
-    this.props.OpportunityGeneralEditAction(this.state);
+    // if (this.props.selectedOpportunityCard.opportunitState) {
+    //   // this.props.OpportunityGeneralEditAction(this.state);
+    //   return;
+    // }
+    //crated opportunity action call here
+    this.props.createOpportunityGeneralAction(this.state);
+    Toast.show({
+      text: 'create contact',
+      buttonText: 'Okay',
+      type: 'success',
+      position: 'center',
+    });
+    this.props.navigation.navigate('Tab');
   };
   render() {
-    console.log('slected id is....=>', this.props.selectedOpportunityCard);
-
     return (
       <Container>
-        {this.state.isLoading ? (
-          <ActivityIndicator />
-        ) : (
-          <Content>
-            <View style={{flex: 1}}>
-              <Item floatingLabel style={styles.itemStyle}>
-                <Label style={styles.label}>title</Label>
-                <Input
-                  value={this.state.title}
-                  style={styles.input}
-                  onChangeText={text => this.setState({title: text})}
-                />
-              </Item>
-              <Item floatingLabel style={styles.itemStyle}>
-                <Label style={styles.label}>Details</Label>
-                <Input
-                  value={this.state.details}
-                  style={styles.input}
-                  multiline={true}
-                  onChangeText={text => this.setState({details: text})}
-                />
-              </Item>
-            </View>
+        <Content>
+          <View style={{flex: 1}}>
+            <Item floatingLabel style={styles.itemStyle}>
+              <Label style={styles.label}>Title</Label>
+              <Input
+                value={this.state.title}
+                style={styles.input}
+                onChangeText={text => this.setState({title: text})}
+              />
+            </Item>
+            <Item floatingLabel style={styles.itemStyle}>
+              <Label style={styles.label}>Details</Label>
+              <Input
+                value={this.state.details}
+                style={styles.input}
+                multiline={true}
+                onChangeText={text => this.setState({details: text})}
+              />
+            </Item>
+          </View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'space-between',
-              }}>
-              <Item picker style={styles.itemStyle}>
-                <View>
-                  <Label style={styles.label}> opportunities Type</Label>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'space-between',
+            }}>
+            <Item picker style={styles.itemStyle}>
+              <View>
+                <Label style={styles.label}>Opportunity Type</Label>
+                <Picker
+                  mode="dropdown"
+                  // iosIcon={<Icon name="ios-arrow-down-outline" />}
+                  placeholderStyle={{color: '#bfc6ea'}}
+                  selectedValue={this.state.opportunitiesType}
+                  onValueChange={value => {
+                    console.log('selected picker values is....=>', value);
+                    this.setState({opportunitiesType: value});
+                  }}>
+                  <Picker.Item label="customer" value="customer" />
+                  <Picker.Item label="prospect" value="prospect" />
+                </Picker>
+              </View>
+            </Item>
+            <Item DatePicker>
+              <View>
+                <Label style={styles.label}>Close Date</Label>
+                <DatePicker
+                  defaultDate={new Date(2018, 4, 4)}
+                  minimumDate={new Date(2018, 1, 1)}
+                  maximumDate={new Date(2018, 12, 31)}
+                  locale={'en'}
+                  timeZoneOffsetInMinutes={undefined}
+                  modalTransparent={false}
+                  animationType={'fade'}
+                  androidMode={'default'}
+                  placeHolderText={this.state.closeDate}
+                  textStyle={{color: 'green'}}
+                  placeHolderTextStyle={{color: 'black'}}
+                  onDateChange={this.setDate}
+                  disabled={false}
+                />
+              </View>
+            </Item>
+          </View>
+
+          <CardItem>
+            <Left>
+              <Item picker>
+                <View style={{flex: 1}}>
+                  <Label style={styles.label}>Stage </Label>
                   <Picker
                     mode="dropdown"
                     // iosIcon={<Icon name="ios-arrow-down-outline" />}
+
                     placeholderStyle={{color: '#bfc6ea'}}
-                    selectedValue={this.state.opportunitiesType}
+                    selectedValue={this.state.stage}
                     onValueChange={value => {
                       console.log('selected picker values is....=>', value);
-                      this.setState({opportunitiesType: value});
+                      this.setState({stage: value});
                     }}>
-                    <Picker.Item label="customer" value="1" />
-                    <Picker.Item label="prospect" value="2" />
+                    <Picker.Item
+                      label="Discovery convocation"
+                      value="Discovery convocation"
+                    />
+                    <Picker.Item label="convocation" value="convocation" />
                   </Picker>
                 </View>
               </Item>
-              <Item DatePicker>
-                <View>
-                  <Label style={styles.label}>close Date</Label>
-                  <DatePicker
-                    defaultDate={new Date(2018, 4, 4)}
-                    minimumDate={new Date(2018, 1, 1)}
-                    maximumDate={new Date(2018, 12, 31)}
-                    locale={'en'}
-                    timeZoneOffsetInMinutes={undefined}
-                    modalTransparent={false}
-                    animationType={'fade'}
-                    androidMode={'default'}
-                    placeHolderText={this.state.closeDate}
-                    textStyle={{color: 'green'}}
-                    placeHolderTextStyle={{color: 'black'}}
-                    onDateChange={this.setDate}
-                    disabled={false}
-                  />
-                </View>
+            </Left>
+          </CardItem>
+          <CardItem>
+            <Left>
+              <Item floatingLabel>
+                <Label style={styles.label}>Estimated Total</Label>
+                <Input
+                  placeholder={'29 2019'}
+                  style={styles.input}
+                  value={this.state.estimated}
+                  onChangeText={text => this.setState({estimated: text})}
+                />
               </Item>
-            </View>
-
-            <CardItem>
-              <Left>
-                <Item picker>
-                  <View style={{flex: 1}}>
-                    <Label style={styles.label}>Stage </Label>
-                    <Picker
-                      mode="dropdown"
-                      // iosIcon={<Icon name="ios-arrow-down-outline" />}
-
-                      placeholderStyle={{color: '#bfc6ea'}}
-                      selectedValue={this.state.stage}
-                      onValueChange={value => {
-                        console.log('selected picker values is....=>', value);
-                        this.setState({stage: value});
-                      }}>
-                      <Picker.Item label="Discovery convocation" value="1" />
-                      <Picker.Item label="convocation" value="2" />
-                    </Picker>
-                  </View>
-                </Item>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Left>
-                <Item floatingLabel>
-                  <Label style={styles.label}>Estimagated</Label>
-                  <Input
-                    placeholder={'29 2019'}
-                    style={styles.input}
-                    value={this.state.estimated}
-                    onChangeText={text => this.setState({estimated: text})}
-                  />
-                </Item>
-              </Left>
-            </CardItem>
-          </Content>
-        )}
+            </Left>
+          </CardItem>
+        </Content>
 
         <Footer>
-          <FooterTab>
+          <FooterTab style={{backgroundColor: 'white'}}>
             <Button
+              success
               full={true}
-              style={{backgroundColor: 'yellow'}}
+              style={{
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
               onPress={this.handleOnSubmit}>
               <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
+            </Button>
+            <Button
+              full={true}
+              danger
+              style={{
+                // backgroundColor: 'yellow',
+                marginRight: 5,
+                borderRadius: 5,
+                marginLeft: 5,
+              }}
+              onPress={() => this.props.navigation.navigate('Tab')}>
+              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
             </Button>
           </FooterTab>
         </Footer>
@@ -195,5 +231,9 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {selectedOpportunity, OpportunityGeneralEditAction},
+  {
+    selectedOpportunity,
+    OpportunityGeneralEditAction,
+    createOpportunityGeneralAction,
+  },
 )(General);

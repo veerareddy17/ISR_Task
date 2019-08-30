@@ -15,6 +15,7 @@ import Images from '../assets/index';
 import {Text, View, Image} from 'react-native';
 import images from '../assets/index';
 import EditOpportunityTabBar from './tab_bar';
+import CreateAccount from '../components/screens/create_accounts';
 
 const AuthStack = createStackNavigator({
   Login: {screen: Login},
@@ -37,7 +38,12 @@ const tabNavigator = createBottomTabNavigator(
     DashBoard: {
       screen: DashBoard,
       navigationOptions: {
-        tabBarIcon: <Image source={Images.eye} />,
+        tabBarIcon: ({tintColor}) =>
+          tintColor != 'black' ? (
+            <Image source={Images.dashbaord} />
+          ) : (
+            <Image source={Images.dashboardfilled} />
+          ),
       },
     },
     Opportunities: {
@@ -67,7 +73,7 @@ const tabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarIcon: ({tintColor}) =>
           tintColor != 'black' ? (
-            <Image source={Images.useravatar} />
+            <Image source={Images.users} />
           ) : (
             <Image source={Images.nounusers} />
           ),
@@ -91,8 +97,8 @@ const tabNavigator = createBottomTabNavigator(
         // marginRight: 0,
         // height: 60,
         // flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
       },
     },
   },
@@ -101,16 +107,24 @@ const tabNavigator = createBottomTabNavigator(
 const Tabs = createAppContainer(tabNavigator);
 const AppStack = createStackNavigator(
   {
-    Tabs: {
+    Tab: {
       screen: Tabs,
       navigationOptions: {
         header: null,
       },
     },
-    EditOpportunity: {screen: EditOpportunity},
+    EditOpportunity: {
+      screen: EditOpportunityTabBar,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+      }),
+    },
+    CreateAccount: {
+      screen: CreateAccount,
+    },
   },
   {
-    initialRouteName: 'Tabs',
+    initialRouteName: 'Tab',
   },
 );
 
@@ -121,7 +135,7 @@ const AppContainer = createAppContainer(
       AppStack: AppStack,
     },
     {
-      initialRouteName: 'AuthStack',
+      initialRouteName: 'AppStack',
     },
   ),
 );
