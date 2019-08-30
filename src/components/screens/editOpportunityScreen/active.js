@@ -14,10 +14,7 @@ import {
 } from 'native-base';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {
-  OpportunityActvityEditAction,
-  createOpportunityActvityAction,
-} from '../../../action/opportunity';
+import {createOpportunityActvityAction} from '../../../action/opportunity';
 
 class Active extends Component {
   state = {
@@ -62,13 +59,13 @@ class Active extends Component {
     }
   }
 
-  handleOnSubmit = () => {
+  handleOnSubmit = async () => {
     // if (this.props.selectedOpportunityCard.opportunitState != null) {
     //   //edit activity here
     //   return;
     // }
     //created new opportunity action call here
-    this.props.createOpportunityActvityAction(this.state);
+    await this.props.createOpportunityActvityAction(this.state);
     Toast.show({
       text: 'create contact',
       buttonText: 'Okay',
@@ -236,5 +233,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {OpportunityActvityEditAction, createOpportunityActvityAction},
+  {createOpportunityActvityAction},
 )(Active);

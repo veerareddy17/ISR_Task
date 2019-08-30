@@ -10,14 +10,10 @@ import {
   CardItem,
   Card,
   Left,
-  Right,
   Toast,
 } from 'native-base';
 import {connect} from 'react-redux';
-import {
-  OpportunityNoteEditAction,
-  createOpportunityNoteAction,
-} from '../../../action/opportunity';
+import {createOpportunityNoteAction} from '../../../action/opportunity';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheet from '../../bottom_sheet';
 
@@ -34,7 +30,7 @@ class Notes extends Component {
   };
   onSubmit = notesData => {
     console.log('call back data is....=>', notesData);
-    this.props.OpportunityNoteEditAction(notesData);
+    // this.props.OpportunityNoteEditAction(notesData);
   };
   createNewNotes = () => {
     this.RBSheetNew.open();
@@ -44,8 +40,8 @@ class Notes extends Component {
 
     console.log('new notes he is create....=>,newNotes', newNotes);
   };
-  handleOnSubmit = () => {
-    this.props.createOpportunityNoteAction(this.state.notes);
+  handleOnSubmit = async () => {
+    await this.props.createOpportunityNoteAction(this.state.notes);
 
     Toast.show({
       text: 'create contact',
@@ -202,5 +198,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {OpportunityNoteEditAction, createOpportunityNoteAction},
+  {createOpportunityNoteAction},
 )(Notes);

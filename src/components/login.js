@@ -1,30 +1,18 @@
 import React, {Component} from 'react';
-import {
-  Container,
-  Header,
-  Item,
-  Label,
-  Input,
-  Button,
-  Text,
-  Form,
-  Right,
-} from 'native-base';
+import {Container, Item, Label, Input, Text, Toast} from 'native-base';
 import {
   View,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
-  TextInput,
   ImageBackground,
   Image,
 } from 'react-native';
 
 import images from '../assets/index';
-import {authenticate} from '../action/login_action';
+import {authenticate, loginValidation} from '../action/login_action';
 import {connect} from 'react-redux';
-import {NavigationScreenProp, navigation} from 'react-navigation';
 import {Dispatch, bindActionCreators} from 'redux';
+import validate from './validate_fields';
 
 class Login extends Component {
   static navigationOptions = {header: null};
@@ -32,10 +20,32 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
+    emailError: '',
+    passwordError: '',
   };
 
   register = async () => {
-    await this.props.requestLoginApi(this.state.email, this.state.password);
+    const emailError = validate(
+      'email',
+      this.state.email,
+      this.state.email.length,
+    );
+    const passwordError = validate(
+      'password',
+      this.state.password,
+      this.state.password.length,
+    );
+    if (emailError || passwordError) {
+      this.props.loginValidationApi(emailError, passwordError);
+      Toast.show({
+        text: `Eneter the correct ${this.props.userState.emailError} ${this.props.userState.passwordError}`,
+        buttonText: 'Okay',
+        type: 'danger',
+        position: 'center',
+      });
+    } else {
+      await this.props.requestLoginApi(this.state.email, this.state.password);
+    }
     if (this.props.userState.user.username.length > 0)
       this.props.navigation.navigate('AppStack');
   };
@@ -72,6 +82,7 @@ class Login extends Component {
                       onChangeText={text => {
                         this.setState({password: text});
                       }}
+                      secureTextEntry={true}
                       style={{color: 'white'}}
                     />
                     <Image source={images.eye} />
@@ -144,6 +155,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestLoginApi: bindActionCreators(authenticate, dispatch),
+  loginValidationApi: bindActionCreators(loginValidation, dispatch),
 });
 
 export default connect(

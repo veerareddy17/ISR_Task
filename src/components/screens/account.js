@@ -2,22 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, FlatList} from 'react-native';
 import Header from '../header';
 import Images from '../../assets/index';
-import {
-  Container,
-  Button,
-  Input,
-  Label,
-  Item,
-  Content,
-  Footer,
-  FooterTab,
-  Card,
-  DatePicker,
-  Left,
-  CardItem,
-  Fab,
-  Body,
-} from 'native-base';
+import {Container, Card, CardItem, Fab} from 'native-base';
 import moment from 'moment';
 import {createAccounts} from '../../action/accounts';
 import {connect} from 'react-redux';

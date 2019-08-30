@@ -18,17 +18,19 @@ import {
 } from 'native-base';
 import {
   selectedOpportunity,
-  OpportunityGeneralEditAction,
   createOpportunityGeneralAction,
 } from '../../../action/opportunity';
 import {connect} from 'react-redux';
+import moment from 'moment';
 
 class General extends Component {
   state = {
     title: '',
     details: '',
     opportunitiesType: '',
-    closeDate: '',
+    closeDate: moment()
+      .locale('fr')
+      .format('YYYY/MM/DD'),
     chooseDate: '',
     stage: '',
     estimated: '',
@@ -58,16 +60,17 @@ class General extends Component {
   }
 
   setDate(newDate) {
-    this.setState({closeDate: newDate});
+    const date = moment(newDate).format('YYYY/MM/DD');
+    this.setState({closeDate: date});
   }
 
-  handleOnSubmit = () => {
+  handleOnSubmit = async () => {
     // if (this.props.selectedOpportunityCard.opportunitState) {
     //   // this.props.OpportunityGeneralEditAction(this.state);
     //   return;
     // }
     //crated opportunity action call here
-    this.props.createOpportunityGeneralAction(this.state);
+    await this.props.createOpportunityGeneralAction(this.state);
     Toast.show({
       text: 'create contact',
       buttonText: 'Okay',
@@ -233,7 +236,6 @@ export default connect(
   mapStateToProps,
   {
     selectedOpportunity,
-    OpportunityGeneralEditAction,
     createOpportunityGeneralAction,
   },
 )(General);

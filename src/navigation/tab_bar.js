@@ -1,7 +1,6 @@
 import {
   createAppContainer,
   createMaterialTopTabNavigator,
-  createBottomTabNavigator,
 } from 'react-navigation';
 import General from '../components/screens/editOpportunityScreen/general';
 import Active from '../components/screens/editOpportunityScreen/active';

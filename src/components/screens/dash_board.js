@@ -39,14 +39,9 @@ class DashBoard extends Component {
               <Card style={styles.cardStyle}>
                 <View style={{flexDirection: 'row'}}>
                   <Image source={Images.lead} />
-                  <Text
-                    style={{fontSize: 25, fontWeight: 'bold', marginLeft: 3}}>
-                    10
-                  </Text>
+                  <Text style={styles.cardTitleNum}>10</Text>
                 </View>
-                <Text style={{color: 'grey', fontSize: 15}}>
-                  Lead Genegrated
-                </Text>
+                <Text style={styles.cardTitle}>Lead Genegrated</Text>
                 <Text>2% is from</Text>
               </Card>
               <TouchableWithoutFeedback
@@ -54,8 +49,7 @@ class DashBoard extends Component {
                 <Card style={styles.cardStyle}>
                   <View style={{flexDirection: 'row'}}>
                     <Image source={Images.opportunity} />
-                    <Text
-                      style={{fontSize: 25, fontWeight: 'bold', marginLeft: 3}}>
+                    <Text style={styles.cardTitleNum}>
                       {this.props.opportunitiList.opportunityList.length}
                     </Text>
                   </View>
@@ -69,28 +63,20 @@ class DashBoard extends Component {
                 <Card style={styles.cardStyle}>
                   <View style={{flexDirection: 'row'}}>
                     <Image source={Images.users} />
-                    <Text
-                      style={{fontSize: 25, fontWeight: 'bold', marginLeft: 3}}>
+                    <Text style={styles.cardTitleNum}>
                       {this.props.accountRegistrationdList.accountList.length}
                     </Text>
                   </View>
-                  <Text style={{color: 'grey', fontSize: 15}}>
-                    New Registration
-                  </Text>
+                  <Text style={styles.cardTitle}>New Registration</Text>
                   <Text>2% is from</Text>
                 </Card>
               </TouchableWithoutFeedback>
               <Card style={styles.cardStyle}>
                 <View style={{flexDirection: 'row'}}>
                   <Image source={Images.lead} />
-                  <Text
-                    style={{fontSize: 25, fontWeight: 'bold', marginLeft: 3}}>
-                    10
-                  </Text>
+                  <Text style={styles.cardTitleNum}>10</Text>
                 </View>
-                <Text style={{color: 'grey', fontSize: 15}}>
-                  Lead Genegrated
-                </Text>
+                <Text style={styles.cardTitle}>Lead Genegrated</Text>
                 <Text>2% is from</Text>
               </Card>
             </View>
@@ -117,12 +103,14 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cardTitle: {color: 'grey', fontSize: 15},
   rightView: {
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5,
     flexDirection: 'row',
   },
+  cardTitleNum: {fontSize: 25, fontWeight: 'bold', marginLeft: 3},
 });
 
 const mapStateToProps = state => {

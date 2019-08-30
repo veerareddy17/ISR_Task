@@ -75,84 +75,76 @@ export const createNewOpportunity = id => async (dispatch, getState) => {
 //   // const response = ApiService.fetchOpportunityContactChange(contactData);
 // };
 
-export const createOpportunityActvityAction = activitData => (
+export const createOpportunityActvityAction = activitData => async (
   dispatch,
   getState,
 ) => {
   var opportunitState = {...getState().opportunityReducer};
-  opportunitState.opportunityList[opportunitState.opportunityId] = {
-    ...opportunitState.opportunityList[opportunitState.opportunityId],
-    opportunity: opportunitState.opportunityId,
-    activity: activitData,
-    id: opportunitState.opportunityId,
-  };
 
-  console.log(
-    'general data is create......=>',
-    opportunitState.opportunityList,
-  );
-  opportunitState.selectedOpportunity = '';
-  dispatch({
-    type: ActionTypes.CREAT_OPPORTTIES,
-    payload: opportunitState,
-  });
+  const response = await ApiService.createOpportunityActvity(activitData);
+  if (response && response.data) {
+    opportunitState.opportunityList[opportunitState.opportunityId] = {
+      ...opportunitState.opportunityList[opportunitState.opportunityId],
+      opportunity: opportunitState.opportunityId,
+      activity: response.data,
+      id: opportunitState.opportunityId,
+    };
+    opportunitState.selectedOpportunity = '';
+    dispatch({
+      type: ActionTypes.CREAT_OPPORTTIES,
+      payload: opportunitState,
+    });
+  }
   // const response = ApiService.fetchOpportunityContactChange(contactData);
 };
 
-export const createOpportunityGeneralAction = generalData => (
+export const createOpportunityGeneralAction = generalData => async (
   dispatch,
   getState,
 ) => {
   var opportunitState = {...getState().opportunityReducer};
   console.log('edited contact data is....=>', generalData);
-
-  //  { Opportunities: 1,
-  //         estmatedToatl: 500,
-  //         user: 'customer'}
-  opportunitState.opportunityList[opportunitState.opportunityId] = {
-    ...opportunitState.opportunityList[opportunitState.opportunityId],
-    opportunity: opportunitState.opportunityId,
-    Opportunities: opportunitState.opportunityId,
-    estmatedToatl: generalData.estimated,
-    general: generalData,
-    user: generalData.opportunitiesType,
-    id: opportunitState.opportunityId,
-  };
-
-  console.log(
-    'general data is create......=>',
-    opportunitState.opportunityList,
-  );
-  opportunitState.selectedOpportunity = '';
-  dispatch({
-    type: ActionTypes.CREAT_OPPORTTIES,
-    payload: opportunitState,
-  });
+  const response = await ApiService.createOpportunityGeneral(generalData);
+  if (response && response.data) {
+    opportunitState.opportunityList[opportunitState.opportunityId] = {
+      ...opportunitState.opportunityList[opportunitState.opportunityId],
+      opportunity: opportunitState.opportunityId,
+      Opportunities: opportunitState.opportunityId,
+      estmatedToatl: generalData.estimated,
+      general: response.data,
+      user: generalData.opportunitiesType,
+      id: opportunitState.opportunityId,
+    };
+    opportunitState.selectedOpportunity = '';
+    dispatch({
+      type: ActionTypes.CREAT_OPPORTTIES,
+      payload: opportunitState,
+    });
+  }
   // const response = ApiService.fetchOpportunityContactChange(contactData);
 };
 
-export const createOpportunityNoteAction = notesData => (
+export const createOpportunityNoteAction = notesData => async (
   dispatch,
   getState,
 ) => {
   var opportunitState = {...getState().opportunityReducer};
 
-  opportunitState.opportunityList[opportunitState.opportunityId] = {
-    ...opportunitState.opportunityList[opportunitState.opportunityId],
-    opportunity: opportunitState.opportunityId,
-    notes: notesData,
-    id: opportunitState.opportunityId,
-  };
+  const response = await ApiService.createOpportunityNotes(notesData);
 
-  console.log(
-    'general data is create......=>',
-    opportunitState.opportunityList,
-  );
-  opportunitState.selectedOpportunity = '';
-  dispatch({
-    type: ActionTypes.CREAT_OPPORTTIES,
-    payload: opportunitState,
-  });
+  if (response && response.data) {
+    opportunitState.opportunityList[opportunitState.opportunityId] = {
+      ...opportunitState.opportunityList[opportunitState.opportunityId],
+      opportunity: opportunitState.opportunityId,
+      notes: response.data,
+      id: opportunitState.opportunityId,
+    };
+    opportunitState.selectedOpportunity = '';
+    dispatch({
+      type: ActionTypes.CREAT_OPPORTTIES,
+      payload: opportunitState,
+    });
+  }
   // const response = ApiService.fetchOpportunityContactChange(contactData);
 };
 
@@ -161,10 +153,7 @@ export const createOpportunityContactAction = contactData => async (
   getState,
 ) => {
   dispatch(startLoading);
-  console.log('edited contact data is....=>', contactData);
   var opportunitState = {...getState().opportunityReducer};
-  console.log('edited contact data is....=>', contactData);
-
   const response = await ApiService.createOpportunityContact(contactData);
 
   if (response && response.data) {
@@ -183,11 +172,6 @@ export const createOpportunityContactAction = contactData => async (
     //do what you need here
     return dispatch(stopLoading);
   }, 500);
-
-  console.log(
-    'general data is create......=>',
-    opportunitState.opportunityList,
-  );
   opportunitState.selectedOpportunity = '';
 
   // const response = ApiService.fetchOpportunityContactChange(contactData);
