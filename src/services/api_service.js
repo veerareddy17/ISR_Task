@@ -46,8 +46,6 @@ export default class ApiService {
   static fetchOpportunityDetails = async id => {
     var response = await {success: false, data: null};
     response.data = data[0];
-
-    console.log('service data... is=>', response);
     return await response;
   };
 
@@ -55,6 +53,27 @@ export default class ApiService {
     var response = await {success: false, data: null};
     response.success = await true;
     response.data = await contctData;
+    return response;
+  };
+
+  static createOpportunityNotes = async notesData => {
+    var response = await {success: false, data: null};
+    response.success = await true;
+    response.data = await notesData;
+    return response;
+  };
+
+  static createOpportunityGeneral = async generalData => {
+    var response = await {success: false, data: null};
+    response.success = await true;
+    response.data = await generalData;
+    return response;
+  };
+
+  static createOpportunityActvity = async activityData => {
+    var response = await {success: false, data: null};
+    response.success = await true;
+    response.data = await activityData;
     return response;
   };
 }

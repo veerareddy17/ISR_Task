@@ -42,9 +42,6 @@ class Opportunities extends Component {
   };
   render() {
     const {navigation} = this.props;
-
-    console.log('data in my component...=>', this.props.isLoading);
-
     return (
       <Container>
         <View
@@ -65,15 +62,7 @@ class Opportunities extends Component {
           </Header>
         </View>
 
-        <Text
-          style={{
-            fontSize: 25,
-            fontWeight: 'bold',
-            marginTop: 10,
-            marginLeft: 5,
-          }}>
-          Your Opportunities
-        </Text>
+        <Text style={styles.oprortunityStyle}>Your Opportunities</Text>
         <View style={{flex: 1}}>
           {this.props.isLoading ? (
             <ActivityIndicator />
@@ -134,6 +123,12 @@ var styles = StyleSheet.create({
   headerText: {
     fontWeight: 'bold',
     fontSize: 18,
+  },
+  oprortunityStyle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginLeft: 5,
   },
   titleView: {
     flex: 3,

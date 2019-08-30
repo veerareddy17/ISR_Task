@@ -22,3 +22,15 @@ export const authenticate = (username, password) => (dispatch, getState) => {
     payload: authState,
   });
 };
+export const loginValidation = (emailError, passwordError) => (
+  dispatch,
+  getState,
+) => {
+  var authState = getState().auth;
+  authState.emailError = emailError ? emailError : '';
+  authState.passwordError = passwordError ? passwordError : '';
+  dispatch({
+    type: ActionTypes.LOGIN_VALIDATION,
+    payload: authState,
+  });
+};

@@ -12,10 +12,7 @@ import {
   Toast,
 } from 'native-base';
 import {connect} from 'react-redux';
-import {
-  OpportunityContactEditAction,
-  createOpportunityContactAction,
-} from '../../../action/opportunity';
+import {createOpportunityContactAction} from '../../../action/opportunity';
 
 class Contact extends Component {
   state = {
@@ -51,7 +48,7 @@ class Contact extends Component {
       const contactData = this.props.selectedOpportunityCard.selectedOpportunity
         .contact;
       const {id, ...statedata} = contactData;
-      this.props.OpportunityContactEditAction(this.state);
+      // this.props.OpportunityContactEditAction(this.state);
       return;
     }
     await this.props.createOpportunityContactAction(this.state);
@@ -61,7 +58,7 @@ class Contact extends Component {
       type: 'success',
       position: 'center',
     });
-    // this.props.navigation.navigate('Tab');
+    this.props.navigation.navigate('Tab');
 
     //create new opportunity action here
   };
@@ -170,5 +167,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {OpportunityContactEditAction, createOpportunityContactAction},
+  {createOpportunityContactAction},
 )(Contact);

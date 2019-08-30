@@ -135,7 +135,7 @@ const AppContainer = createAppContainer(
       AppStack: AppStack,
     },
     {
-      initialRouteName: 'AppStack',
+      initialRouteName: 'AuthStack',
     },
   ),
 );

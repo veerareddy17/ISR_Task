@@ -12,7 +12,6 @@ import {
   FooterTab,
 } from 'native-base';
 import moment from 'moment';
-import {connect} from 'react-redux';
 export default class BottomSheet extends React.Component {
   state = {
     parentAccount: '',
@@ -38,9 +37,7 @@ export default class BottomSheet extends React.Component {
   };
 
   setDate(newDate) {
-    console.log('onchanges date iss.....=>', newDate);
-    var date = moment(newDate).format('YYYY/MM/DD');
-    console.log('changes the  date iss.....=>', date);
+    const date = moment(newDate).format('YYYY/MM/DD');
     this.setState({date: date});
   }
   renderItem() {
@@ -86,7 +83,7 @@ export default class BottomSheet extends React.Component {
                   <DatePicker
                     defaultDate={new Date(2018, 4, 4)}
                     minimumDate={new Date(2018, 1, 1)}
-                    maximumDate={new Date(2018, 12, 31)}
+                    maximumDate={new Date(2020, 12, 31)}
                     locale={'en'}
                     timeZoneOffsetInMinutes={undefined}
                     modalTransparent={false}
