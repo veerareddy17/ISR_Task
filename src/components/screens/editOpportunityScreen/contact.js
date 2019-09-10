@@ -53,7 +53,7 @@ class Contact extends Component {
     }
     await this.props.createOpportunityContactAction(this.state);
     Toast.show({
-      text: 'create contact',
+      text: 'created contact',
       buttonText: 'Okay',
       type: 'success',
       position: 'center',
@@ -107,7 +107,7 @@ class Contact extends Component {
               </Item>
 
               <Item floatingLabel style={styles.item}>
-                <Label style={styles.label}>Pnumber</Label>
+                <Label style={styles.label}>Phone</Label>
 
                 <Input
                   placeholder={'Desciption'}

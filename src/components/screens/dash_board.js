@@ -6,8 +6,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
-import {Container, Content, Card} from 'native-base';
+import {Container, Content, Card, Left, Right} from 'native-base';
 import Header from '../header';
 import Images from '../../assets/index';
 import {connect} from 'react-redux';
@@ -29,7 +30,13 @@ class DashBoard extends Component {
               </Text>
             </View>
             <View style={styles.rightView}>
-              <Image source={Images.useravatar} style={{marginRight: 5}} />
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.navigation.navigate('DrawerOpen');
+                  this.props.navigation.toggleAccountDetailsDrawer();
+                }}>
+                <Image source={Images.useravatar} style={{marginRight: 5}} />
+              </TouchableOpacity>
             </View>
           </Header>
         </View>
@@ -81,6 +88,26 @@ class DashBoard extends Component {
               </Card>
             </View>
           </ScrollView>
+          <Card>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: 10,
+              }}>
+              <Text>Potential opportunity near you</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.navigation.toggleDashBoardDrawer();
+                  this.props.navigation.navigate('toggleDashBoardDrawer', {
+                    userName: 'shatkumare',
+                  });
+                  // this.props.navigation.openDrawer();
+                }}>
+                <Image source={Images.filter} />
+              </TouchableOpacity>
+            </View>
+          </Card>
         </Content>
       </Container>
     );

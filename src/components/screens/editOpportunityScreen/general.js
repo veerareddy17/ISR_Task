@@ -27,7 +27,7 @@ class General extends Component {
   state = {
     title: '',
     details: '',
-    opportunitiesType: '',
+    opportunitiesType: 'customer',
     closeDate: moment()
       .locale('fr')
       .format('YYYY/MM/DD'),
@@ -72,7 +72,7 @@ class General extends Component {
     //crated opportunity action call here
     await this.props.createOpportunityGeneralAction(this.state);
     Toast.show({
-      text: 'create contact',
+      text: 'created General',
       buttonText: 'Okay',
       type: 'success',
       position: 'center',

@@ -44,7 +44,7 @@ class Notes extends Component {
     await this.props.createOpportunityNoteAction(this.state.notes);
 
     Toast.show({
-      text: 'create contact',
+      text: 'create notes',
       buttonText: 'Okay',
       type: 'success',
       position: 'center',
