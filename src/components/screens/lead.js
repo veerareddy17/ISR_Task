@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Container} from 'native-base';
 import Header from '../header';
 import Images from '../../assets/index';
@@ -23,7 +23,13 @@ export default class Lead extends Component {
               </Text>
             </View>
             <View style={styles.rightView}>
-              <Image source={Images.useravatar} style={{marginRight: 5}} />
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.navigation.navigate('DrawerOpen');
+                  this.props.navigation.toggleAccountDetailsDrawer();
+                }}>
+                <Image source={Images.useravatar} style={{marginRight: 5}} />
+              </TouchableOpacity>
             </View>
           </Header>
         </View>

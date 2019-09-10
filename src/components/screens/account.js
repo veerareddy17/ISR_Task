@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image, FlatList} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import Header from '../header';
 import Images from '../../assets/index';
 import {Container, Card, CardItem, Fab} from 'native-base';
@@ -56,7 +63,13 @@ class Accounts extends Component {
               </Text>
             </View>
             <View style={styles.rightView}>
-              <Image source={Images.useravatar} style={{marginRight: 5}} />
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.navigation.navigate('DrawerOpen');
+                  this.props.navigation.toggleAccountDetailsDrawer();
+                }}>
+                <Image source={Images.useravatar} style={{marginRight: 5}} />
+              </TouchableOpacity>
             </View>
           </Header>
         </View>

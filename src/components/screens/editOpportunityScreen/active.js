@@ -67,7 +67,7 @@ class Active extends Component {
     //created new opportunity action call here
     await this.props.createOpportunityActvityAction(this.state);
     Toast.show({
-      text: 'create contact',
+      text: 'created activity',
       buttonText: 'Okay',
       type: 'success',
       position: 'center',

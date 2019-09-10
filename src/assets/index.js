@@ -1,8 +1,11 @@
 const images = {
   backgroundTransparent: require('../assets/Rectangle_22.png'),
+
   background: require('../assets/tractor-3.png'),
+  close: require('../assets/close.png'),
   dashbaord: require('../assets/dashbaord.png'),
   dashboardfilled: require('../assets/dashboardfilled.png'),
+  filter: require('../assets/filter.png'),
   logo: require('../assets/logo-white.png'),
   eye: require('../assets/eye.png'),
   userpin: require('../assets/user-pin.png'),

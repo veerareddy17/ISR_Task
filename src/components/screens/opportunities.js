@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import {Container, Left, Right, Card, CardItem, Fab} from 'native-base';
@@ -57,7 +58,13 @@ class Opportunities extends Component {
               </Text>
             </View>
             <View style={styles.rightView}>
-              <Image source={Images.useravatar} style={{marginRight: 5}} />
+              <TouchableOpacity
+                onPress={() => {
+                  // this.props.navigation.navigate('DrawerOpen');
+                  this.props.navigation.toggleAccountDetailsDrawer();
+                }}>
+                <Image source={Images.useravatar} style={{marginRight: 5}} />
+              </TouchableOpacity>
             </View>
           </Header>
         </View>

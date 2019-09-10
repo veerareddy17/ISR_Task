@@ -3,6 +3,8 @@ import {
   createStackNavigator,
   createAppContainer,
   createSwitchNavigator,
+  createDrawerNavigator,
+  DrawerActions,
 } from 'react-navigation';
 import React, {Component} from 'react';
 import Accounts from '../components/screens/account';
@@ -16,10 +18,42 @@ import {Text, View, Image} from 'react-native';
 import images from '../assets/index';
 import EditOpportunityTabBar from './tab_bar';
 import CreateAccount from '../components/screens/create_accounts';
+import MyDrawer from './drawer_navigator';
+import AccountDetails from '../components/account_details';
+import Settings from '../components/screens/setting';
+import Filter from '../components/filter';
 
 const AuthStack = createStackNavigator({
   Login: {screen: Login},
 });
+
+const DashBoardDrawer = createDrawerNavigator(
+  {
+    DashBoard: {
+      screen: DashBoard,
+    },
+  },
+
+  {
+    getCustomActionCreators: (route, stateKey) => {
+      return {
+        toggleDashBoardDrawer: () =>
+          DrawerActions.toggleDrawer({key: stateKey}),
+      };
+    },
+    drawerPosition: 'left',
+    contentComponent: props => <Filter {...props} />,
+    //  Filter,
+    initialRouteName: 'DashBoard',
+    drawerPosition: 'right',
+    drawerOpenRoute: 'DashBoardDrawerDrawerOpen',
+    drawerCloseRoute: 'DashBoardDrawerDrawerClose',
+    drawerToggleRoute: 'DashBoardDrawerDrawerToggle',
+    drawerWidth: 300,
+  },
+);
+// const MyDrawer = createAppContainer(Drawer);
+// export default MyDrawer;
 
 const OpportunitiesTabNavigato = createAppContainer(
   createStackNavigator(
@@ -36,7 +70,7 @@ const OpportunitiesTabNavigato = createAppContainer(
 const tabNavigator = createBottomTabNavigator(
   {
     DashBoard: {
-      screen: DashBoard,
+      screen: DashBoardDrawer,
       navigationOptions: {
         tabBarIcon: ({tintColor}) =>
           tintColor != 'black' ? (
@@ -105,18 +139,50 @@ const tabNavigator = createBottomTabNavigator(
 );
 
 const Tabs = createAppContainer(tabNavigator);
+const Drawer = createDrawerNavigator(
+  {
+    Tabs: {
+      screen: Tabs,
+    },
+  },
+
+  {
+    contentComponent: AccountDetails,
+    getCustomActionCreators: (route, stateKey) => {
+      return {
+        toggleAccountDetailsDrawer: () =>
+          DrawerActions.toggleDrawer({key: stateKey}),
+      };
+    },
+    initialRouteName: 'Tabs',
+    drawerPosition: 'right',
+    drawerOpenRoute: 'DrawerOpen',
+    drawerCloseRoute: 'DrawerClose',
+    drawerToggleRoute: 'DrawerToggle',
+    drawerWidth: 300,
+  },
+);
+// const MyDrawer = createAppContainer(Drawer);
+
 const AppStack = createStackNavigator(
   {
     Tab: {
-      screen: Tabs,
+      screen: Drawer,
       navigationOptions: {
         header: null,
       },
     },
+
     EditOpportunity: {
       screen: EditOpportunityTabBar,
       navigationOptions: ({navigation}) => ({
         title: navigation.state.params.title,
+      }),
+    },
+    Settings: {
+      screen: Settings,
+      navigationOptions: ({navigation}) => ({
+        title: 'Settings',
       }),
     },
     CreateAccount: {
@@ -133,6 +199,7 @@ const AppContainer = createAppContainer(
     {
       AuthStack: AuthStack,
       AppStack: AppStack,
+      // MyDrawer: MyDrawer,
     },
     {
       initialRouteName: 'AuthStack',

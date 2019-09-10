@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {
   Button,
   Input,
@@ -12,6 +12,7 @@ import {
   FooterTab,
 } from 'native-base';
 import moment from 'moment';
+import Images from '../assets/index';
 export default class BottomSheet extends React.Component {
   state = {
     parentAccount: '',
@@ -46,7 +47,7 @@ export default class BottomSheet extends React.Component {
         <Content style={{flex: 1}}>
           <Card>
             <View style={{flex: 1}}>
-              <Item floatingLabel style={styles.itemStyle}>
+              {/* <Item floatingLabel style={styles.itemStyle}>
                 <Label style={styles.label}>Parent Account</Label>
                 <Input
                   placeholder={'Big Iron'}
@@ -65,7 +66,7 @@ export default class BottomSheet extends React.Component {
                     this.setState({parentOpportunity: text})
                   }
                 />
-              </Item>
+              </Item> */}
 
               <Item floatingLabel style={styles.itemStyle}>
                 <Label style={styles.label}>Title</Label>
@@ -122,7 +123,8 @@ export default class BottomSheet extends React.Component {
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <TouchableOpacity onPress={this._onPressClose}>
             <View style={styles.closeStyle}>
-              <Text style={{marginRight: 10}}>close</Text>
+              {/* <Text style={{marginRight: 10}}>close</Text> */}
+              <Image source={Images.close} style={{marginRight: 10}} />
             </View>
           </TouchableOpacity>
 
@@ -155,7 +157,7 @@ export default class BottomSheet extends React.Component {
                 borderRadius: 5,
                 marginLeft: 5,
               }}
-              onPress={() => {}}>
+              onPress={this._onPressClose}>
               <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
             </Button>
           </FooterTab>
@@ -211,6 +213,6 @@ var styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderBottomRightRadius: 60,
-    backgroundColor: 'yellow',
+    backgroundColor: 'red',
   },
 });

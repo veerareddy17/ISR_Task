@@ -110,7 +110,7 @@ class CreateAccount extends Component {
           </Item>
 
           <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>PNumber</Label>
+            <Label style={styles.label}>Phone</Label>
 
             <Input
               placeholder={'Desciption'}
@@ -168,7 +168,7 @@ class CreateAccount extends Component {
               }}
               onPress={() => {
                 Toast.show({
-                  text: 'Wrong password!',
+                  text: 'canceld!',
                   buttonText: 'Okay',
                   type: 'warning',
                 });

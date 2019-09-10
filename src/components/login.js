@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Item, Label, Input, Text, Toast} from 'native-base';
+import {Container, Item, Label, Input, Icon, Text, Toast} from 'native-base';
 import {
   View,
   TouchableOpacity,
@@ -76,7 +76,7 @@ class Login extends Component {
 
               <View style={styles.inputView}>
                 <View style={{flex: 1}}>
-                  <Item floatingLabel>
+                  <Item floatingLabel={true}>
                     <Label style={{color: 'white'}}>Password</Label>
                     <Input
                       onChangeText={text => {
@@ -85,11 +85,11 @@ class Login extends Component {
                       secureTextEntry={true}
                       style={{color: 'white'}}
                     />
-                    <Image source={images.eye} />
+                    {/* <Image source={images.eye} /> */}
+                    <Icon name="eye" />
                   </Item>
                 </View>
               </View>
-
               <View style={styles.loginView}>
                 <TouchableOpacity
                   onPress={this.register}
