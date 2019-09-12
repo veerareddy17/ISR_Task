@@ -16,5 +16,6 @@ export const LOADING_START = 'LOADING_START';
 export const LOADING_STOP = 'LOADING_STOP';
 
 //accounts
+export const FETCH_ACCOUNTS = 'FETCH_ACCOUNTS';
 export const CREATE_ACCOUNTS = 'CREATE_ACCOUNTS';
 export const DELET_ACCOUNTS = 'DELET_ACCOUNTS';

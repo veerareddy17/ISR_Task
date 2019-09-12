@@ -51,6 +51,7 @@ class Filter extends Component {
   }
 
   render() {
+    console.log('filter props is... lets check.=>', this.props);
     return (
       <View style={{flex: 1}}>
         <View
@@ -77,7 +78,6 @@ class Filter extends Component {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  // this.props.navigation.navigate('DrawerOpen');
                   this.props.navigation.closeDrawer();
                 }}>
                 <Image source={Images.close} style={{marginRight: 10}} />

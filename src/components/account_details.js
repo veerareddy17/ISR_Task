@@ -1,30 +1,8 @@
 import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
-import {
-  ScrollView,
-  Text,
-  View,
-  FlatList,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Container,
-  Left,
-  Right,
-  Card,
-  CardItem,
-  Fab,
-  ListItem,
-  CheckBox,
-  Body,
-  InputGroup,
-  Input,
-  Icon,
-} from 'native-base';
+import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {ListItem, Icon} from 'native-base';
 import Images from '../assets/index';
-import Header from './header';
 import {DrawerActions} from 'react-navigation';
 
 class AccountDetails extends Component {
@@ -38,25 +16,9 @@ class AccountDetails extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <View
-          style={{
-            height: 200,
-            elevation: 5,
-            backgroundColor: 'rgb(255,217,25)',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
+        <View style={styles.profileContainer}>
           <View>
-            <View
-              style={{
-                height: 100,
-                width: 100,
-                borderRadius: 100 / 2,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'grey',
-                margin: 10,
-              }}>
+            <View style={styles.profileDp}>
               <Image source={Images.useravatar} style={{marginRight: 5}} />
             </View>
             <Text style={{marginLeft: 10}}>shant kumar</Text>
@@ -66,14 +28,10 @@ class AccountDetails extends Component {
           </View>
           <View
             style={{
-              // alignItems: 'center',
-              // justifyContent: 'center',
-
               margin: 10,
             }}>
             <TouchableOpacity
               onPress={() => {
-                // this.props.navigation.navigate('DrawerOpen');
                 this.props.navigation.closeDrawer();
               }}>
               <Image source={Images.close} style={{marginRight: 10}} />
@@ -86,15 +44,37 @@ class AccountDetails extends Component {
             this.props.navigation.navigate('Settings');
             this.props.navigation.closeDrawer();
           }}>
-          <Text style={{fontSize: 15}}>Setting</Text>
+          <Icon name="settings" style={styles.iconStyle} />
+          <Text style={styles.iconTitleStyle}>Settings</Text>
         </ListItem>
-
         <ListItem>
-          <Text style={{fontSize: 15}}>Home</Text>
+          <Icon name="home" style={styles.iconStyle} />
+          <Text style={styles.iconTitleStyle}>Home</Text>
         </ListItem>
       </View>
     );
   }
 }
+
+var styles = StyleSheet.create({
+  profileContainer: {
+    height: 200,
+    elevation: 5,
+    backgroundColor: 'rgb(255,217,25)',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  profileDp: {
+    height: 100,
+    width: 100,
+    borderRadius: 100 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+    margin: 10,
+  },
+  iconStyle: {color: 'grey'},
+  iconTitleStyle: {fontSize: 15, marginLeft: 10},
+});
 
 export default AccountDetails;

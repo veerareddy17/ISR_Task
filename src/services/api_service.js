@@ -76,4 +76,19 @@ export default class ApiService {
     response.data = await activityData;
     return response;
   };
+
+  //accounts related
+  static createAccount = async accountData => {
+    var response = {success: false, data: null};
+    if (accountData) {
+      response.success = true;
+      response.data = accountData;
+    }
+    return response;
+  };
+  static fetchAccounts = async () => {
+    var response = {success: false, data: null};
+    response.success = true;
+    return response;
+  };
 }

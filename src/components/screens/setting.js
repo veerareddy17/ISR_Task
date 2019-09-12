@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Container, Content, ListItem, Body, Right} from 'native-base';
-import Header from '../header';
 import Images from '../../assets/index';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Settings extends Component {
   render() {
@@ -12,27 +12,11 @@ export default class Settings extends Component {
       <Container>
         <Content>
           <ListItem>
-            <View
-              style={{
-                height: 100,
-                width: 100,
-                borderRadius: 100 / 2,
-
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'grey',
-              }}>
+            <View style={styles.profileDpstyle}>
               <Image source={Images.useravatar} style={{marginRight: 5}} />
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  height: 40,
-                  width: 40,
-                  borderRadius: 20,
-                  backgroundColor: 'green',
-                }}></View>
+              <View style={styles.buttonTochangeDp}>
+                <Icon name="camera" style={{color: 'white'}} size={25} />
+              </View>
             </View>
             <Body>
               <Text style={{marginLeft: 10}}>shant kumar</Text>
@@ -41,7 +25,7 @@ export default class Settings extends Component {
               </Text>
             </Body>
             <Right>
-              <Text>Edit</Text>
+              <Icon name="edit" style={{color: 'grey'}} size={30} />
             </Right>
           </ListItem>
           <ListItem>
@@ -60,19 +44,24 @@ export default class Settings extends Component {
 }
 
 var styles = StyleSheet.create({
-  titleView: {
-    flex: 3,
+  profileDpstyle: {
+    height: 100,
+    width: 100,
+    borderRadius: 100 / 2,
+
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'grey',
   },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-  rightView: {
-    alignItems: 'center',
+  buttonTochangeDp: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    backgroundColor: 'green',
     justifyContent: 'center',
-    marginRight: 5,
-    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

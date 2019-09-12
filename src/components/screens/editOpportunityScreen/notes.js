@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import {createOpportunityNoteAction} from '../../../action/opportunity';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomSheet from '../../bottom_sheet';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class Notes extends Component {
   state = {
@@ -93,7 +94,7 @@ class Notes extends Component {
                   </Left>
 
                   <TouchableOpacity onPress={() => this.RBSheet.open()}>
-                    <Text>Edit</Text>
+                    <Icon name="edit" style={{color: 'grey'}} size={30} />
                   </TouchableOpacity>
                 </CardItem>
 
