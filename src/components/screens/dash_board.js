@@ -98,10 +98,13 @@ class DashBoard extends Component {
               <Text>Potential opportunity near you</Text>
               <TouchableOpacity
                 onPress={() => {
-                  // this.props.navigation.toggleDashBoardDrawer();
-                  this.props.navigation.navigate('toggleDashBoardDrawer', {
-                    userName: 'shatkumare',
+                  this.props.navigation.navigate('DashBoard', {
+                    user: this.props.accountRegistrationdList.accountList,
                   });
+                  this.props.navigation.toggleDashBoardDrawer();
+                  // this.props.navigation.navigate('toggleDashBoardDrawer', {
+                  //   userName: 'shatkumare',
+                  // });
                   // this.props.navigation.openDrawer();
                 }}>
                 <Image source={Images.filter} />

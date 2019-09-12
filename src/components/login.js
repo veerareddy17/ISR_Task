@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Container, Item, Label, Input, Icon, Text, Toast} from 'native-base';
+import {Container, Item, Label, Input, Text, Toast, Icon} from 'native-base';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   View,
   TouchableOpacity,
@@ -22,6 +23,7 @@ class Login extends Component {
     password: '',
     emailError: '',
     passwordError: '',
+    showPassword: true,
   };
 
   register = async () => {
@@ -46,7 +48,7 @@ class Login extends Component {
     } else {
       await this.props.requestLoginApi(this.state.email, this.state.password);
     }
-    if (this.props.userState.user.username.length > 0)
+    if (this.props.userState.user.token)
       this.props.navigation.navigate('AppStack');
   };
 
@@ -82,11 +84,33 @@ class Login extends Component {
                       onChangeText={text => {
                         this.setState({password: text});
                       }}
-                      secureTextEntry={true}
+                      secureTextEntry={this.state.showPassword}
                       style={{color: 'white'}}
                     />
                     {/* <Image source={images.eye} /> */}
-                    <Icon name="eye" />
+                    {this.state.showPassword ? (
+                      <Icon
+                        active={false}
+                        name="eye-off"
+                        style={{color: 'white'}}
+                        onPress={() =>
+                          this.setState({
+                            showPassword: !this.state.showPassword,
+                          })
+                        }
+                      />
+                    ) : (
+                      <Icon
+                        active={false}
+                        name="eye"
+                        style={{color: 'white'}}
+                        onPress={() =>
+                          this.setState({
+                            showPassword: !this.state.showPassword,
+                          })
+                        }
+                      />
+                    )}
                   </Item>
                 </View>
               </View>

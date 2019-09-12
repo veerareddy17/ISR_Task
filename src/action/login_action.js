@@ -8,6 +8,7 @@ export const authenticate = (username, password) => (dispatch, getState) => {
   if (response.success) {
     authState.user = {
       username,
+      token: true,
     };
 
     dispatch({

@@ -11,7 +11,7 @@ import Header from '../header';
 import Images from '../../assets/index';
 import {Container, Card, CardItem, Fab} from 'native-base';
 import moment from 'moment';
-import {createAccounts} from '../../action/accounts';
+import {createAccounts, fetchAccounts} from '../../action/accounts';
 import {connect} from 'react-redux';
 
 class Accounts extends Component {
@@ -29,19 +29,8 @@ class Accounts extends Component {
     this.setState({ragistrationDate: moment(date).format('YYYY/MM/DD')});
   };
 
-  createNewAaccount = () => {
-    this.props.createAccounts(this.state);
-    this.setState({
-      firstName: '',
-      lastName: '',
-      companyName: '',
-      email: '',
-      phoneNumber: '',
-      ragistrationDate: '',
-    });
-  };
-  componentDidMount() {
-    this.setState({accountData: this.props.account.accountList});
+  async componentDidMount() {
+    await this.props.fetchAccounts();
   }
 
   createNewAccounts = () => {
@@ -65,7 +54,6 @@ class Accounts extends Component {
             <View style={styles.rightView}>
               <TouchableOpacity
                 onPress={() => {
-                  // this.props.navigation.navigate('DrawerOpen');
                   this.props.navigation.toggleAccountDetailsDrawer();
                 }}>
                 <Image source={Images.useravatar} style={{marginRight: 5}} />
@@ -78,8 +66,49 @@ class Accounts extends Component {
           data={this.props.account.accountList}
           renderItem={({item}) => {
             return (
-              <Card>
-                <CardItem>
+              <Card
+                style={{
+                  borderColor: 'rgb(249, 249, 69)',
+                  borderLeftWidth: 10,
+                }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      height: 60,
+                      width: 60,
+                      borderRadius: 30,
+                      backgroundColor: 'grey',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      margin: 10,
+                    }}>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                      {item.firstName[0]}
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flex: 2,
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                    }}>
+                    <View>
+                      <Text style={{}}>
+                        {item.firstName}
+                        {item.lastName}
+                      </Text>
+                      <Text style={{}}>{item.email}</Text>
+                      <Text style={{}}>{item.phoneNumber}</Text>
+                    </View>
+                    {/* <Text style={{}}>{item.companyName}</Text> */}
+                  </View>
+                </View>
+                {/* <CardItem>
                   <Text style={styles.namingText}>Name:</Text>
                   <Text style={{fontWeight: 'bold'}}>
                     {item.firstName}
@@ -107,7 +136,7 @@ class Accounts extends Component {
                     {' '}
                     {item.ragistrationDate}
                   </Text>
-                </CardItem>
+                </CardItem> */}
               </Card>
             );
           }}
@@ -159,5 +188,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {createAccounts},
+  {fetchAccounts},
 )(Accounts);

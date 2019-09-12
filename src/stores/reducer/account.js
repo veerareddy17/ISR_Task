@@ -11,6 +11,8 @@ export default function accountReducer(state = initialState, action) {
       return action.payload;
     case ActionTypes.DELET_ACCOUNTS:
       return action.payload;
+    case ActionTypes.FETCH_ACCOUNTS:
+      return action.payload;
     default:
       return state;
   }
