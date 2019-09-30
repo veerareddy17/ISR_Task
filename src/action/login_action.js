@@ -1,37 +1,52 @@
 import ApiService from '../services/api_service';
+
+import AuthService from '../services/auth_services';
 import * as ActionTypes from '../action/types';
 import {startLoading, stopLoading} from './common';
 
-export const authenticate = (username, password) => (dispatch, getState) => {
+export const authenticate = (username, password) => async (
+  dispatch,
+  getState,
+) => {
   var authState = getState().auth;
-  const response = ApiService.authenticate(username, password);
-  if (response.success) {
-    authState.user = {
-      username,
-      token: true,
+  dispatch(startLoading);
+  let request = {
+    username: 'AuctionWebsiteUtility',
+    password: ' KXpaEJDebLU9SvlJswg6',
+    grant_type: 'password',
+  };
+
+  // const response = await ApiService.authenticate(username, password);
+  const response = await AuthService.login(request);
+  console.log('what is responce i a getting here...=>', response);
+  console.log('error information is,.....=>', response.error_description);
+
+  if (response && response.access_token) {
+    let user = {
+      userName: response.userName,
     };
+    authState.user = user;
 
     dispatch({
       type: ActionTypes.LOGIN_SUCCESS,
       payload: authState,
     });
-    return;
+    dispatch(stopLoading);
+  } else {
+    authState.error = response.error_description;
+    dispatch({
+      type: ActionTypes.LOGIN_FAILURE,
+      payload: authState,
+    });
+    dispatch(stopLoading);
   }
-  authState.error = error;
-  dispatch({
-    type: ActionTypes.LOGIN_FAILURE,
-    payload: authState,
-  });
 };
-export const loginValidation = (emailError, passwordError) => (
-  dispatch,
-  getState,
-) => {
-  var authState = getState().auth;
-  authState.emailError = emailError ? emailError : '';
-  authState.passwordError = passwordError ? passwordError : '';
+
+export const togglePasswordVisibility = () => (dispatch, getState) => {
+  var authState = {...getState().auth};
+  authState.togglePassword = !authState.togglePassword;
   dispatch({
-    type: ActionTypes.LOGIN_VALIDATION,
+    type: ActionTypes.TOGGLE_PASSWORD,
     payload: authState,
   });
 };

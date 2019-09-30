@@ -27,20 +27,24 @@ class Opportunities extends Component {
     await this.props.fetchOpportunities();
   }
 
-  handleSelections = async item => {
+  handleSelections = async (item, index) => {
     console.log('what i ma getting ...=>', item);
-    await this.props.selectedOpportunity(item.id);
+    await this.props.selectedOpportunity(item.Id);
     this.props.navigation.navigate('EditOpportunity', {
-      title: 'Opportunity' + item.id,
+      title: 'Opportunity' + index,
     });
   };
 
   createOpportunity = () => {
-    this.props.createNewOpportunity(this.props.id);
-    this.props.navigation.navigate('EditOpportunity', {
-      title: 'CreateOpportunity' + '',
-    });
+    this.props.navigation.navigate('AccountList', {title: 'Select Account'});
+    // this.props.createNewOpportunity(this.props.id);
+    // this.props.navigation.navigate('EditOpportunity', {
+    //   title: 'CreateOpportunity' + '',
+    // });
   };
+  componentWillUnmount() {
+    console.log('unmounted opportunity');
+  }
   render() {
     const {navigation} = this.props;
     return (
@@ -79,9 +83,9 @@ class Opportunities extends Component {
                 extraData={this.props.data}
                 data={this.props.data.opportunityList}
                 keyExtractor={(item, index) => 'key' + index}
-                renderItem={({item}) => (
+                renderItem={({item, index}) => (
                   <TouchableWithoutFeedback
-                    onPress={() => this.handleSelections(item)}>
+                    onPress={() => this.handleSelections(item, index)}>
                     <CardItem bordered>
                       <Left
                         style={{
@@ -89,15 +93,17 @@ class Opportunities extends Component {
                           alignItems: 'flex-start',
                         }}>
                         <Text style={{fontWeight: 'bold'}}>
-                          Opportunities {item.Opportunities}
+                          Opportunities {index}
                         </Text>
-                        <Text style={styles.textStyle}>{item.user}</Text>
+                        <Text style={styles.textStyle}>
+                          {item.ItemCategory}
+                        </Text>
                       </Left>
 
                       <Right>
                         <Text style={styles.textStyle}>estmatedToatl</Text>
                         <Text style={{fontWeight: 'bold', color: 'green'}}>
-                          ${item.estmatedToatl}
+                          ${item.ProjectedTotal}
                         </Text>
                       </Right>
                     </CardItem>
@@ -107,16 +113,15 @@ class Opportunities extends Component {
             </Card>
           )}
         </View>
-        <View style={{flex: 1}}>
-          <Fab
-            direction="up"
-            // containerStyle={{}}
-            style={{backgroundColor: 'rgb(255,217,25)'}}
-            position="bottomRight"
-            onPress={this.createOpportunity}>
-            <Text style={{fontSize: 25, color: 'black'}}>+</Text>
-          </Fab>
-        </View>
+
+        <Fab
+          direction="up"
+          // containerStyle={{}}
+          style={{backgroundColor: 'rgb(255,217,25)'}}
+          position="bottomRight"
+          onPress={this.createOpportunity}>
+          <Text style={{fontSize: 25, color: 'black'}}>+</Text>
+        </Fab>
       </Container>
     );
   }

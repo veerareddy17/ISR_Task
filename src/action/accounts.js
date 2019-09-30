@@ -1,26 +1,44 @@
 import ApiService from '../services/api_service';
 import * as ActionTypes from '../action/types';
 import {startLoading, stopLoading} from './common';
+import uuid from 'react-native-uuid';
+import {Buffer} from 'buffer';
+global.Buffer = Buffer;
 
+//create Accounts
 export const createAccounts = data => async (dispatch, getState) => {
   var accountState = {...getState().accountReducer};
 
-  console.log('data in my account..=>', accountState);
-  const response = await ApiService.createAccount(data);
-  if (response && response.data) {
-    accountState.accountList = accountState.accountList.concat(response.data);
-    dispatch({
-      type: ActionTypes.CREATE_ACCOUNTS,
-      payload: accountState,
-    });
+  var Id = uuid.v1({
+    node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+    clockseq: 0x1234,
+    msecs: new Date().getTime(),
+    nsecs: 5678,
+  });
+  data.Id = Id;
+  var accountData = data;
+  const response = await ApiService.createAccount(accountData);
+  if (response && response.status == 201) {
+    // const response = await ApiService.fetchAccounts();
+    // accountState.accountList = response;
+    // dispatch({type: ActionTypes.FETCH_ACCOUNTS, payload: accountState});
+    // dispatch(stopLoading);
   }
+  dispatch(stopLoading);
 };
+
+//fetch Accounts
 export const fetchAccounts = () => async (dispatch, getState) => {
   var accountState = {...getState().accountReducer};
+  dispatch(startLoading);
+
   const response = await ApiService.fetchAccounts();
   if (response) {
-    console.log('contorl is comming or not ltes check in account fetch');
-    accountState.accountList = accountState.accountList;
+    accountState.accountList = response;
+
     dispatch({type: ActionTypes.FETCH_ACCOUNTS, payload: accountState});
+    dispatch(stopLoading);
+    return;
   }
+  dispatch(stopLoading);
 };

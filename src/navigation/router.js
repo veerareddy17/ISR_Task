@@ -6,30 +6,30 @@ import {
   createDrawerNavigator,
   DrawerActions,
 } from 'react-navigation';
-import React, {Component} from 'react';
+import React from 'react';
 import Accounts from '../components/screens/account';
 import DashBoard from '../components/screens/dash_board';
 import Lead from '../components/screens/lead';
 import Login from '../components/login';
 import Opportunities from '../components/screens/opportunities';
-import EditOpportunity from '../components/screens/edit_opportunite';
 import Images from '../assets/index';
-import {Text, View, Image} from 'react-native';
+import {Image} from 'react-native';
 import images from '../assets/index';
 import EditOpportunityTabBar from './tab_bar';
 import CreateAccount from '../components/screens/create_accounts';
-import MyDrawer from './drawer_navigator';
 import AccountDetails from '../components/account_details';
 import Settings from '../components/screens/setting';
 import Filter from '../components/filter';
+import AccountList from '../components/screens/account_list';
+import CreateActivity from '../components/screens/editOpportunityScreen/create_activity';
 
 const AuthStack = createStackNavigator({
   Login: {screen: Login},
 });
 
-const DashBoardDrawer = createDrawerNavigator(
+const DashBoardWithFilterDrawer = createDrawerNavigator(
   {
-    DashBoard: {
+    Dashboard: {
       screen: DashBoard,
     },
   },
@@ -44,7 +44,7 @@ const DashBoardDrawer = createDrawerNavigator(
     drawerPosition: 'left',
     contentComponent: props => <Filter {...props} />,
     //  Filter,
-    initialRouteName: 'DashBoard',
+    initialRouteName: 'Dashboard',
     drawerPosition: 'right',
     drawerOpenRoute: 'DashBoardDrawerDrawerOpen',
     drawerCloseRoute: 'DashBoardDrawerDrawerClose',
@@ -52,25 +52,10 @@ const DashBoardDrawer = createDrawerNavigator(
     drawerWidth: 300,
   },
 );
-// const MyDrawer = createAppContainer(Drawer);
-// export default MyDrawer;
-
-const OpportunitiesTabNavigato = createAppContainer(
-  createStackNavigator(
-    {
-      Opportunities: Opportunities,
-
-      EditOpportunity: EditOpportunity,
-    },
-    {
-      initialRouteName: 'Opportunities',
-    },
-  ),
-);
 const tabNavigator = createBottomTabNavigator(
   {
-    DashBoard: {
-      screen: DashBoardDrawer,
+    Dashboard: {
+      screen: DashBoardWithFilterDrawer,
       navigationOptions: {
         tabBarIcon: ({tintColor}) =>
           tintColor != 'black' ? (
@@ -115,7 +100,7 @@ const tabNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'DashBoard',
+    initialRouteName: 'Dashboard',
     tabBarOptions: {
       upperCaseLabel: false,
       showIcon: true,
@@ -139,7 +124,7 @@ const tabNavigator = createBottomTabNavigator(
 );
 
 const Tabs = createAppContainer(tabNavigator);
-const Drawer = createDrawerNavigator(
+const TabsWithDrawer = createDrawerNavigator(
   {
     Tabs: {
       screen: Tabs,
@@ -147,11 +132,11 @@ const Drawer = createDrawerNavigator(
   },
 
   {
-    contentComponent: AccountDetails,
-    getCustomActionCreators: (route, stateKey) => {
+    contentComponent: props => <AccountDetails {...props} />,
+    getCustomActionCreators: (route, stateKey, navigation) => {
       return {
         toggleAccountDetailsDrawer: () =>
-          DrawerActions.toggleDrawer({key: stateKey}),
+          DrawerActions.toggleDrawer({key: stateKey, params: navigation}),
       };
     },
     initialRouteName: 'Tabs',
@@ -167,7 +152,7 @@ const Drawer = createDrawerNavigator(
 const AppStack = createStackNavigator(
   {
     Tab: {
-      screen: Drawer,
+      screen: TabsWithDrawer,
       navigationOptions: {
         header: null,
       },
@@ -177,6 +162,9 @@ const AppStack = createStackNavigator(
       screen: EditOpportunityTabBar,
       navigationOptions: ({navigation}) => ({
         title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
       }),
     },
     Settings: {
@@ -185,8 +173,33 @@ const AppStack = createStackNavigator(
         title: 'Settings',
       }),
     },
+    AccountList: {
+      screen: AccountList,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
+      }),
+    },
+    CreateActivity: {
+      screen: CreateActivity,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
+      }),
+    },
     CreateAccount: {
       screen: CreateAccount,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
+      }),
     },
   },
   {
