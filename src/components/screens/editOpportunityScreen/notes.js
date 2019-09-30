@@ -11,6 +11,7 @@ import {
   Card,
   Left,
   Toast,
+  Spinner,
 } from 'native-base';
 import {connect} from 'react-redux';
 import {createOpportunityNoteAction} from '../../../action/opportunity';
@@ -21,6 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 class Notes extends Component {
   state = {
     notes: [],
+    selectedItem: {},
   };
 
   onClose = () => {
@@ -29,17 +31,19 @@ class Notes extends Component {
   onCloseNewSheet = () => {
     this.RBSheetNew.close();
   };
-  onSubmit = notesData => {
+  onSubmit = data => {
+    // this.setState({
+    //   notes: this.state.notes.concat(data),
+    // });
     console.log('call back data is....=>', notesData);
     // this.props.OpportunityNoteEditAction(notesData);
   };
   createNewNotes = () => {
     this.RBSheetNew.open();
   };
-  onSubmitNewNotes = newNotes => {
-    this.setState({notes: this.state.notes.concat(newNotes)});
-
-    console.log('new notes he is create....=>,newNotes', newNotes);
+  onSubmitNewNotes = () => {
+    // this.setState({notes: this.state.notes.concat(newNotes)});
+    // console.log('new notes he is create....=>,newNotes', newNotes);
   };
   handleOnSubmit = async () => {
     await this.props.createOpportunityNoteAction(this.state.notes);
@@ -53,74 +57,101 @@ class Notes extends Component {
     this.props.navigation.navigate('Tab');
   };
   componentDidMount() {
+    console.log(
+      'whan i hit submit its once more its comming aa..=>',
+      this.props.selectedOpportunityCard.selectedOpportunity.Notes,
+    );
     var entry = this.props.selectedOpportunityCard.selectedOpportunity;
     var name;
     var countIndices = 0;
     for (name in entry) {
-      if (name === 'notes') {
+      if (name === 'Notes') {
         ++countIndices;
       }
     }
     if (countIndices >= 1) {
       this.setState({
-        notes: this.props.selectedOpportunityCard.selectedOpportunity.notes,
+        notes: this.props.selectedOpportunityCard.selectedOpportunity.Notes,
       });
       return;
     }
   }
+
   render() {
     return (
       <Container>
-        <FlatList
-          data={this.state.notes}
-          renderItem={({item}) => {
-            return (
-              <Card>
-                <CardItem>
+        {this.props.common.isLoading ? (
+          <Spinner />
+        ) : (
+          <FlatList
+            extraData={
+              this.props.selectedOpportunityCard.selectedOpportunity.Notes
+            }
+            data={this.props.selectedOpportunityCard.selectedOpportunity.Notes}
+            keyExtractor={(data, index) => `n ${index}`}
+            renderItem={({item}) => {
+              return (
+                <Card>
+                  {/* <CardItem>
                   <Left>
                     <Text>{item.parentOpportunity}</Text>
                   </Left>
                   <Text>{item.parentAccount}</Text>
-                </CardItem>
-                <CardItem>
-                  <Text>{item.title}</Text>
-                  <Body>
-                    <Text>{item.comments}</Text>
-                  </Body>
-                </CardItem>
-                <CardItem>
-                  <Left>
-                    <Text>{item.date}</Text>
-                  </Left>
+                </CardItem> */}
+                  <CardItem>
+                    <Text>{item.Title}</Text>
+                    {/* <Body>
+                      <Text>{item.comments}</Text>
+                    </Body> */}
+                  </CardItem>
+                  <CardItem>
+                    <Text>{item.Comments}</Text>
+                  </CardItem>
+                  <CardItem>
+                    <Left>
+                      <Text>{item.Date}</Text>
+                    </Left>
 
-                  <TouchableOpacity onPress={() => this.RBSheet.open()}>
-                    <Icon name="edit" style={{color: 'grey'}} size={30} />
-                  </TouchableOpacity>
-                </CardItem>
+                    <TouchableOpacity
+                      onPress={() => {
+                        console.log(
+                          'data when i click each notes..is.....=>',
+                          item,
+                        );
+                        this.setState({selectedItem: item});
+                        this.RBSheet.open();
+                      }}>
+                      <Icon name="edit" style={{color: 'grey'}} size={30} />
+                    </TouchableOpacity>
+                  </CardItem>
+                </Card>
+              );
+            }}
+          />
+        )}
 
-                <RBSheet
-                  ref={ref => {
-                    this.RBSheet = ref;
-                  }}
-                  // closeOnPressMask={false}
-                  height={400}
-                  duration={150}
-                  // closeOnDragDown={true}
-                  customStyles={{
-                    container: {
-                      flex: 1,
-                      height: 400,
-                      borderTopRightRadius: 20,
-                      borderTopLeftRadius: 20,
-                    },
-                  }}>
-                  <BottomSheet submit={this.onSubmit} close={this.onClose} />
-                </RBSheet>
-              </Card>
-            );
+        <RBSheet
+          ref={ref => {
+            this.RBSheet = ref;
           }}
-        />
-
+          // closeOnPressMask={false}
+          height={400}
+          duration={150}
+          // closeOnDragDown={true}
+          customStyles={{
+            container: {
+              flex: 1,
+              height: 400,
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+            },
+          }}>
+          <BottomSheet
+            submit={this.onSubmit}
+            close={this.onClose}
+            notesData={this.state.selectedItem}
+          />
+        </RBSheet>
         <View style={{flex: 1}}>
           <Fab
             direction="up"
@@ -152,15 +183,16 @@ class Notes extends Component {
             />
           </RBSheet>
         </View>
-        <Footer>
-          <FooterTab style={{backgroundColor: 'white'}}>
+        <Footer
+          style={{marginBottom: 10, backgroundColor: 'white', elevation: 0}}>
+          <FooterTab style={{backgroundColor: 'white', elevation: 0}}>
             <Button
               success
               full={true}
               style={{
                 marginRight: 5,
                 borderRadius: 5,
-                marginLeft: 5,
+                marginLeft: 10,
               }}
               onPress={this.handleOnSubmit}>
               <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
@@ -170,7 +202,7 @@ class Notes extends Component {
               danger
               style={{
                 // backgroundColor: 'yellow',
-                marginRight: 5,
+                marginRight: 10,
                 borderRadius: 5,
                 marginLeft: 5,
               }}
@@ -194,6 +226,7 @@ const mapStateToProps = state => {
   console.log('state value', state);
   return {
     selectedOpportunityCard: state.opportunityReducer,
+    common: state.common,
   };
 };
 

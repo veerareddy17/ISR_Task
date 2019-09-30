@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../header';
 import Images from '../../assets/index';
@@ -13,57 +14,58 @@ import {Container, Card, CardItem, Fab} from 'native-base';
 import moment from 'moment';
 import {createAccounts, fetchAccounts} from '../../action/accounts';
 import {connect} from 'react-redux';
+import {NavigationEvents} from 'react-navigation';
 
-class Accounts extends Component {
-  state = {
-    firstName: '',
-    lastName: '',
-    companyName: '',
-    email: '',
-    phoneNumber: '',
-    ragistrationDate: '',
-    accountData: [],
+{
+  /* <NavigationEvents
+onWillBlur={() => this.componentDidMount()}
+onDidBlur={() => this.render()}> */
+}
+
+function Accounts(props) {
+  fetchData = async () => {
+    console.log('is comming or not .....1 ');
+    await props.fetchAccounts();
   };
-
-  setDate = date => {
-    this.setState({ragistrationDate: moment(date).format('YYYY/MM/DD')});
-  };
-
-  async componentDidMount() {
-    await this.props.fetchAccounts();
-  }
 
   createNewAccounts = () => {
-    this.props.navigation.navigate('CreateAccount');
+    props.navigation.navigate('CreateAccount', {title: 'Create Account'});
   };
-  render() {
-    return (
-      <Container>
-        <View
-          style={{
-            height: 60,
-            backgroundColor: 'rgb(255,217,25)',
-            elevation: 4,
-          }}>
-          <Header>
-            <View style={styles.titleView}>
-              <Text style={styles.headerText}>
-                {this.props.navigation.state.routeName}
-              </Text>
-            </View>
-            <View style={styles.rightView}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.toggleAccountDetailsDrawer();
-                }}>
-                <Image source={Images.useravatar} style={{marginRight: 5}} />
-              </TouchableOpacity>
-            </View>
-          </Header>
-        </View>
+
+  return (
+    <Container>
+      <View
+        style={{
+          height: 60,
+          backgroundColor: 'rgb(255,217,25)',
+          elevation: 4,
+        }}>
+        <Header>
+          <View style={styles.titleView}>
+            <Text style={styles.headerText}>
+              {props.navigation.state.routeName}
+            </Text>
+          </View>
+          <View style={styles.rightView}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.toggleAccountDetailsDrawer();
+              }}>
+              <Image source={Images.useravatar} style={{marginRight: 5}} />
+            </TouchableOpacity>
+          </View>
+        </Header>
+      </View>
+      <NavigationEvents
+        onWillFocus={() => fetchData()}
+        onDidBlur={() => {}}></NavigationEvents>
+      {props.isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
         <FlatList
-          extraData={this.props.account.accountList}
-          data={this.props.account.accountList}
+          keyExtractor={(item, index) => item.Id}
+          extraData={props.account.accountList}
+          data={props.account.accountList}
           renderItem={({item}) => {
             return (
               <Card
@@ -87,7 +89,7 @@ class Accounts extends Component {
                       margin: 10,
                     }}>
                     <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                      {item.firstName[0]}
+                      {item.FirstName[0]}
                     </Text>
                   </View>
 
@@ -99,62 +101,32 @@ class Accounts extends Component {
                     }}>
                     <View>
                       <Text style={{}}>
-                        {item.firstName}
-                        {item.lastName}
+                        {item.FirstName}
+                        {item.LastName}
                       </Text>
-                      <Text style={{}}>{item.email}</Text>
-                      <Text style={{}}>{item.phoneNumber}</Text>
+                      <Text style={{}}>{item.Email}</Text>
+                      <Text style={{}}>{item.Phone}</Text>
                     </View>
-                    {/* <Text style={{}}>{item.companyName}</Text> */}
                   </View>
                 </View>
-                {/* <CardItem>
-                  <Text style={styles.namingText}>Name:</Text>
-                  <Text style={{fontWeight: 'bold'}}>
-                    {item.firstName}
-                    {item.lastName}
-                  </Text>
-                </CardItem>
-
-                <CardItem>
-                  <Text style={styles.namingText}>company Name:</Text>
-                  <Text style={{fontWeight: 'bold'}}>{item.companyName}</Text>
-                </CardItem>
-                <CardItem>
-                  <Text style={styles.namingText}>PNumber:</Text>
-                  <Text style={{fontWeight: 'bold'}}> {item.phoneNumber}</Text>
-                </CardItem>
-                <CardItem>
-                  <Text style={styles.namingText}>Email:</Text>
-
-                  <Text style={{fontWeight: 'bold'}}> {item.email}</Text>
-                </CardItem>
-                <CardItem>
-                  <Text style={styles.namingText}>Ragistration Date:</Text>
-
-                  <Text style={{fontWeight: 'bold'}}>
-                    {' '}
-                    {item.ragistrationDate}
-                  </Text>
-                </CardItem> */}
               </Card>
             );
           }}
         />
+      )}
 
-        <View style={{flex: 1}}>
-          <Fab
-            direction="up"
-            containerStyle={{}}
-            style={{backgroundColor: 'rgb(255,217,25)'}}
-            position="bottomRight"
-            onPress={this.createNewAccounts}>
-            <Text style={{fontSize: 25, color: 'black'}}>+</Text>
-          </Fab>
-        </View>
-      </Container>
-    );
-  }
+      <View style={{flex: 1}}>
+        <Fab
+          direction="up"
+          containerStyle={{}}
+          style={{backgroundColor: 'rgb(255,217,25)'}}
+          position="bottomRight"
+          onPress={this.createNewAccounts}>
+          <Text style={{fontSize: 25, color: 'black'}}>+</Text>
+        </Fab>
+      </View>
+    </Container>
+  );
 }
 
 var styles = StyleSheet.create({
@@ -183,6 +155,7 @@ var styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     account: state.accountReducer,
+    isLoading: state.common.isLoading,
   };
 };
 

@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
-import Header from '../header';
-import Images from '../../assets/index';
+import React from 'react';
+import {Text, View, StyleSheet} from 'react-native';
 import {
   Container,
   Button,
@@ -11,179 +9,173 @@ import {
   Content,
   Footer,
   FooterTab,
-  Card,
   DatePicker,
   Toast,
 } from 'native-base';
 import moment from 'moment';
-import {createAccounts} from '../../action/accounts';
+import {createAccounts, fetchAccounts} from '../../action/accounts';
 import {connect} from 'react-redux';
+import useForm from 'react-hook-form';
 
-class CreateAccount extends Component {
-  static navigationOptions = {header: null};
-  state = {
-    firstName: '',
-    lastName: '',
-    companyName: '',
-    email: '',
-    phoneNumber: '',
-    ragistrationDate: '',
+function CreateAccount(props) {
+  const {register, handleSubmit, setValue, errors} = useForm(); // initialise the hook
+
+  const onSubmit = async data => {
+    console.log(data);
+    await props.createAccounts(data);
+    await props.fetchAccounts();
+    props.navigation.navigate('Tab');
   };
-
   setDate = date => {
-    this.setState({ragistrationDate: moment(date).format('YYYY/MM/DD')});
+    setValue('RegistrationDate', moment(date).format('YYYY/MM/DD'));
   };
 
-  createNewAaccount = () => {
-    this.props.createAccounts(this.state);
-    this.setState({
-      firstName: '',
-      lastName: '',
-      companyName: '',
-      email: '',
-      phoneNumber: '',
-      ragistrationDate: '',
-    });
-  };
-  render() {
-    const {navigation} = this.props;
+  return (
+    <Container>
+      <Content>
+        <Item floatingLabel style={styles.item}>
+          <Label style={styles.label}>First Name</Label>
+          <Input
+            placeholder={'Big Iron'}
+            style={styles.input}
+            name="FirstName"
+            key="FirstName"
+            ref={register({name: 'FirstName'}, {required: true})}
+            placeholder="FirstName"
+            onChangeText={e => setValue('FirstName', e)}
+          />
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.FirstName && 'First Name is required'}
+        </Text>
+        <Item floatingLabel style={styles.item}>
+          <Label style={styles.label}>Last Name</Label>
+          <Input
+            placeholder={'Opportunity 1'}
+            style={styles.input}
+            name="LastName"
+            key="LastName"
+            ref={register({name: 'LastName'}, {required: true})}
+            placeholder="LastName"
+            onChangeText={e => setValue('LastName', e)}
+          />
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.LastName && 'Last Name is required'}
+        </Text>
+        <Item floatingLabel style={styles.item}>
+          <Label style={styles.label}>Company Name</Label>
 
-    console.log(navigation.state.routeName);
-    return (
-      <Container>
-        <View
-          style={{
-            height: 60,
-            backgroundColor: 'rgb(255,217,25)',
-            elevation: 4,
-          }}>
-          <Header>
-            <View style={styles.titleView}>
-              <Text style={styles.headerText}>
-                {navigation.state.routeName}
-              </Text>
-            </View>
-            <View style={styles.rightView}>
-              <Image source={Images.useravatar} style={{marginRight: 5}} />
-            </View>
-          </Header>
-        </View>
-        <Content>
-          <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>First Name</Label>
-            <Input
-              placeholder={'Big Iron'}
-              style={styles.input}
-              value={this.state.firstName}
-              onChangeText={text => this.setState({firstName: text})}
-            />
-          </Item>
-          <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>Last Name</Label>
-            <Input
-              placeholder={'Opportunity 1'}
-              style={styles.input}
-              value={this.state.lastName}
-              onChangeText={text => this.setState({lastName: text})}
-            />
-          </Item>
-          <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>Company Name</Label>
+          <Input
+            placeholder={'Desciption'}
+            style={styles.input}
+            name="CompanyName"
+            key="CompanyName"
+            ref={register({name: 'CompanyName'}, {required: true})}
+            placeholder="CompanyName"
+            onChangeText={e => setValue('CompanyName', e)}
+          />
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.CompanyName && 'Company Name is required'}
+        </Text>
 
-            <Input
-              placeholder={'Desciption'}
-              style={styles.input}
-              value={this.state.companyName}
-              onChangeText={text => this.setState({companyName: text})}
-            />
-          </Item>
+        <Item floatingLabel style={styles.item}>
+          <Label style={styles.label}>Email</Label>
 
-          <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>Email</Label>
+          <Input
+            placeholder={'None'}
+            style={styles.input}
+            keyboardType={'email-address'}
+            name="Email"
+            key="Email"
+            ref={register({name: 'Email'}, {required: true})}
+            placeholder="Email"
+            onChangeText={e => setValue('Email', e)}
+          />
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.Email && 'Email is required'}
+        </Text>
 
-            <Input
-              placeholder={'None'}
-              style={styles.input}
-              value={this.state.email}
-              onChangeText={text => this.setState({email: text})}
-            />
-          </Item>
+        <Item floatingLabel style={styles.item}>
+          <Label style={styles.label}>Phone</Label>
 
-          <Item floatingLabel style={styles.item}>
-            <Label style={styles.label}>Phone</Label>
+          <Input
+            placeholder={'Desciption'}
+            style={styles.input}
+            keyboardType={'phone-pad'}
+            name="Phone"
+            key="Phone"
+            ref={register({name: 'Phone'}, {required: true})}
+            placeholder="Phone"
+            onChangeText={e => setValue('Phone', e)}
+          />
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.Phone && 'Phone is required'}
+        </Text>
 
-            <Input
-              placeholder={'Desciption'}
-              style={styles.input}
-              value={this.state.phoneNumber}
-              onChangeText={text => this.setState({phoneNumber: text})}
-            />
-          </Item>
-
-          <Item DatePicker style={styles.item}>
-            <View>
-              <Label style={styles.label}>Ragistration Date</Label>
-              <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
-                locale={'en'}
-                formatChosenDate={date => {
-                  return moment(date).format('YYYY/MM/DD');
-                }}
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType={'fade'}
-                androidMode={'default'}
-                placeHolderText={this.state.ragistrationDate}
-                textStyle={{color: 'green'}}
-                placeHolderTextStyle={{color: 'black'}}
-                onDateChange={this.setDate}
-                disabled={false}
-              />
-            </View>
-          </Item>
-        </Content>
-        <Footer>
-          <FooterTab style={{backgroundColor: 'white'}}>
-            <Button
-              success
-              full={true}
-              style={{
-                marginRight: 5,
-                borderRadius: 5,
-                marginLeft: 5,
+        <Item DatePicker style={styles.item}>
+          <View>
+            <Label style={styles.label}>Ragistration Date</Label>
+            <DatePicker
+              defaultDate={new Date(2018, 4, 4)}
+              minimumDate={new Date(2018, 1, 1)}
+              maximumDate={new Date(2018, 12, 31)}
+              key="RegistrationDate"
+              locale={'en'}
+              formatChosenDate={date => {
+                return moment(date).format('YYYY/MM/DD');
               }}
-              onPress={this.createNewAaccount}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
-            </Button>
-            <Button
-              full={true}
-              danger
-              style={{
-                // backgroundColor: 'yellow',
-                marginRight: 5,
-                borderRadius: 5,
-                marginLeft: 5,
-              }}
-              onPress={() => {
-                Toast.show({
-                  text: 'canceld!',
-                  buttonText: 'Okay',
-                  type: 'warning',
-                });
-                this.props.navigation.navigate('Tab');
-              }}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
-    );
-  }
+              name="RegistrationDate"
+              ref={register({name: 'RegistrationDate'}, {required: true})}
+              timeZoneOffsetInMinutes={undefined}
+              modalTransparent={false}
+              animationType={'fade'}
+              androidMode={'default'}
+              textStyle={{color: 'green'}}
+              placeHolderTextStyle={{color: 'black'}}
+              onDateChange={this.setDate}
+              disabled={false}
+            />
+          </View>
+        </Item>
+        <Text style={styles.errorText}>
+          {errors.RegistrationDate && 'Ragistration Date is required'}
+        </Text>
+      </Content>
+      <Footer style={styles.footer}>
+        <FooterTab style={{backgroundColor: 'white', elevation: 0}}>
+          <Button
+            success
+            full={true}
+            style={styles.footerLeftButton}
+            onPress={handleSubmit(onSubmit)}>
+            <Text style={styles.footerText}>Save</Text>
+          </Button>
+          <Button
+            full={true}
+            danger
+            style={styles.footerRightButton}
+            onPress={() => {
+              Toast.show({
+                text: 'canceld!',
+                buttonText: 'Okay',
+                type: 'warning',
+              });
+              props.navigation.navigate('Tab');
+            }}>
+            <Text style={styles.footerText}>Cancel</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </Container>
+  );
 }
 
 var styles = StyleSheet.create({
+  errorText: {marginLeft: 10, color: 'red'},
   titleView: {
     flex: 3,
     justifyContent: 'center',
@@ -202,6 +194,19 @@ var styles = StyleSheet.create({
   label: {color: 'grey'},
   input: {color: 'black'},
   item: {marginLeft: 10, marginTop: 20},
+  footer: {marginBottom: 10, backgroundColor: 'white', elevation: 0},
+  footerLeftButton: {
+    marginRight: 5,
+    borderRadius: 5,
+    marginLeft: 10,
+  },
+  footerRightButton: {
+    // backgroundColor: 'yellow',
+    marginRight: 10,
+    borderRadius: 5,
+    marginLeft: 5,
+  },
+  footerText: {color: 'black', fontWeight: 'bold'},
 });
 
 const mapStateToProps = state => {
@@ -212,5 +217,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {createAccounts},
+  {createAccounts, fetchAccounts},
 )(CreateAccount);

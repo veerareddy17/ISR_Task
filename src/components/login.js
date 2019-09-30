@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Container, Item, Label, Input, Text, Toast, Icon} from 'native-base';
+import React from 'react';
+import {Item, Label, Input, Text, Icon, Spinner} from 'native-base';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   View,
@@ -7,126 +7,111 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import images from '../assets/index';
-import {authenticate, loginValidation} from '../action/login_action';
+import {authenticate, togglePasswordVisibility} from '../action/login_action';
 import {connect} from 'react-redux';
-import {Dispatch, bindActionCreators} from 'redux';
-import validate from './validate_fields';
+import {bindActionCreators} from 'redux';
+import useForm from 'react-hook-form';
 
-class Login extends Component {
-  static navigationOptions = {header: null};
-
-  state = {
-    email: '',
-    password: '',
-    emailError: '',
-    passwordError: '',
-    showPassword: true,
+Login.navigationOptions = {header: null};
+function Login(props) {
+  const {register, handleSubmit, setValue, errors} = useForm(); // initialise the hook
+  const onSubmit = async data => {
+    Keyboard.dismiss();
+    await props.requestLoginApi(data.email, data.password);
+    if (props.userState.user.userName) props.navigation.navigate('AppStack');
   };
 
-  register = async () => {
-    const emailError = validate(
-      'email',
-      this.state.email,
-      this.state.email.length,
-    );
-    const passwordError = validate(
-      'password',
-      this.state.password,
-      this.state.password.length,
-    );
-    if (emailError || passwordError) {
-      this.props.loginValidationApi(emailError, passwordError);
-      Toast.show({
-        text: `Eneter the correct ${this.props.userState.emailError} ${this.props.userState.passwordError}`,
-        buttonText: 'Okay',
-        type: 'danger',
-        position: 'center',
-      });
-    } else {
-      await this.props.requestLoginApi(this.state.email, this.state.password);
-    }
-    if (this.props.userState.user.token)
-      this.props.navigation.navigate('AppStack');
-  };
-
-  render() {
-    console.log(this.props.userState);
-    return (
-      <View style={{flex: 1}}>
-        <ImageBackground source={images.background} style={{flex: 1}}>
-          <ImageBackground
-            source={images.backgroundTransparent}
-            style={{flex: 1}}>
-            <View style={styles.viewContainer}>
-              <Image source={images.logo} />
-              <View style={styles.inputView}>
-                <View style={{flex: 1}}>
-                  <Item floatingLabel>
-                    <Label style={{color: 'white'}}>Username</Label>
-                    <Input
-                      onChangeText={text => {
-                        this.setState({email: text});
-                      }}
-                      style={{color: 'white'}}
-                    />
-                  </Item>
-                </View>
-              </View>
-
-              <View style={styles.inputView}>
-                <View style={{flex: 1}}>
-                  <Item floatingLabel={true}>
-                    <Label style={{color: 'white'}}>Password</Label>
-                    <Input
-                      onChangeText={text => {
-                        this.setState({password: text});
-                      }}
-                      secureTextEntry={this.state.showPassword}
-                      style={{color: 'white'}}
-                    />
-                    {/* <Image source={images.eye} /> */}
-                    {this.state.showPassword ? (
-                      <Icon
-                        active={false}
-                        name="eye-off"
-                        style={{color: 'white'}}
-                        onPress={() =>
-                          this.setState({
-                            showPassword: !this.state.showPassword,
-                          })
-                        }
-                      />
-                    ) : (
-                      <Icon
-                        active={false}
-                        name="eye"
-                        style={{color: 'white'}}
-                        onPress={() =>
-                          this.setState({
-                            showPassword: !this.state.showPassword,
-                          })
-                        }
-                      />
-                    )}
-                  </Item>
-                </View>
-              </View>
-              <View style={styles.loginView}>
-                <TouchableOpacity
-                  onPress={this.register}
-                  style={styles.touchableView}>
-                  <Text>Login</Text>
-                </TouchableOpacity>
+  return (
+    <View style={{flex: 1}}>
+      <ImageBackground source={images.background} style={{flex: 1}}>
+        <ImageBackground
+          source={images.backgroundTransparent}
+          style={{flex: 1}}>
+          <View style={styles.viewContainer}>
+            <Image source={images.logo} />
+            {props.userState.error != '' ? (
+              <Text style={{color: 'red'}}>{props.userState.error}</Text>
+            ) : (
+              <View />
+            )}
+            <View style={styles.inputView}>
+              <View style={{flex: 1}}>
+                <Item floatingLabel>
+                  <Label style={{color: 'white'}}>UserName</Label>
+                  <Input
+                    name="email"
+                    ref={register({name: 'email'}, {required: true})}
+                    placeholder="email"
+                    placeholderTextColor="white"
+                    onChangeText={e => setValue('email', e)}
+                    style={{color: 'white'}}
+                    autoCapitalize="none"
+                  />
+                  {errors.email && <Icon name="add" style={{color: 'red'}} />}
+                </Item>
               </View>
             </View>
-          </ImageBackground>
+
+            <View style={styles.inputView}>
+              <View style={{flex: 1}}>
+                <Item floatingLabel={true}>
+                  <Label style={{color: 'white'}}>Password</Label>
+                  <Input
+                    name="password"
+                    ref={register({name: 'password'}, {required: true})}
+                    placeholder="password"
+                    placeholderTextColor="white"
+                    onChangeText={e => setValue('password', e)}
+                    secureTextEntry={props.userState.togglePassword}
+                    style={{color: 'white'}}
+                  />
+
+                  {props.userState.togglePassword ? (
+                    <Icon
+                      active={false}
+                      name="eye-off"
+                      style={{color: 'white'}}
+                      onPress={() => props.togglePasswordAction()}
+                    />
+                  ) : (
+                    <Icon
+                      active={false}
+                      name="eye"
+                      style={{color: 'white'}}
+                      onPress={() => props.togglePasswordAction()}
+                    />
+                  )}
+                </Item>
+                <Text style={{color: 'red'}}>
+                  {errors.password && 'password is required'}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.loginView}>
+              <TouchableOpacity
+                onPress={handleSubmit(onSubmit)}
+                style={styles.touchableView}>
+                <Text>Login</Text>
+              </TouchableOpacity>
+            </View>
+            {props.common.isLoading ? (
+              <View>
+                <Spinner />
+              </View>
+            ) : (
+              <View />
+            )}
+          </View>
         </ImageBackground>
-      </View>
-    );
-  }
+      </ImageBackground>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -171,7 +156,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
 const mapStateToProps = state => ({
   userState: state.auth,
   common: state.common,
@@ -179,7 +163,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestLoginApi: bindActionCreators(authenticate, dispatch),
-  loginValidationApi: bindActionCreators(loginValidation, dispatch),
+  togglePasswordAction: bindActionCreators(togglePasswordVisibility, dispatch),
 });
 
 export default connect(

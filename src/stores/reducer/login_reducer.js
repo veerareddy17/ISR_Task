@@ -2,9 +2,10 @@ import * as ActionTypes from '../../action/types';
 
 const initialState = {
   user: {},
-  error: {},
+  error: '',
   emailError: '',
   passwordError: '',
+  togglePassword: true,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -13,6 +14,8 @@ export default function authReducer(state = initialState, action) {
     case ActionTypes.LOGIN_FAILURE:
       return action.payload;
     case ActionTypes.LOGIN_VALIDATION:
+      return action.payload;
+    case ActionTypes.TOGGLE_PASSWORD:
       return action.payload;
     default:
       return state;

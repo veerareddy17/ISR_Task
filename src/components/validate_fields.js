@@ -1,11 +1,8 @@
 import validation from './validation';
 
-export default function validate(fieldName, value, valueLength) {
+export const validateLoginFields = (fieldName, value, valueLength) => {
   var formValues = {};
   formValues[fieldName] = value;
-
-  var formFields = {};
-  formFields[fieldName] = validation[fieldName];
 
   var result;
   if (fieldName == 'email') {
@@ -24,7 +21,18 @@ export default function validate(fieldName, value, valueLength) {
   }
 
   return null;
-}
-validate.prototype = {
-  value: String,
+};
+
+export const validateFields = objectData => {
+  const response = {success: false, token: null};
+  var entry = objectData;
+  var name;
+  for (name in entry) {
+    if (objectData[name] == '') {
+      response.token = name;
+      break;
+    }
+  }
+  if (response.token == null) response.success = true;
+  return response;
 };

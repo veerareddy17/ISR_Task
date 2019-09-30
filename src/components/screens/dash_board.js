@@ -8,11 +8,19 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
 } from 'react-native';
-import {Container, Content, Card, Left, Right} from 'native-base';
+import {Container, Content, Card} from 'native-base';
 import Header from '../header';
 import Images from '../../assets/index';
 import {connect} from 'react-redux';
+
+import StoreService from '../../services/StoreService';
 class DashBoard extends Component {
+  async componentDidMount() {
+    try {
+      let res = await StoreService.get('access_token');
+      console.log('created token s.......', res);
+    } catch (err) {}
+  }
   render() {
     const {navigation} = this.props;
     return (
@@ -32,8 +40,12 @@ class DashBoard extends Component {
             <View style={styles.rightView}>
               <TouchableOpacity
                 onPress={() => {
-                  // this.props.navigation.navigate('DrawerOpen');
-                  this.props.navigation.toggleAccountDetailsDrawer();
+                  // this.props.navigation.navigate('toggleAccountDetailsDrawer', {
+                  //   userName: 'admin',
+                  // });
+                  this.props.navigation.toggleAccountDetailsDrawer({
+                    userName: 'shant',
+                  });
                 }}>
                 <Image source={Images.useravatar} style={{marginRight: 5}} />
               </TouchableOpacity>
