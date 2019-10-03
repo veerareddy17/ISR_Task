@@ -142,28 +142,10 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    signingConfigs {
-        debug {
-            storeFile file('isrApp.keystore')
-            storePassword 'Pa$$w0rd%'
-            keyAlias 'ISRMobileApp'
-            keyPassword 'Pa$$w0rd%'
-        }
-        release {
-            storeFile file('isrApp.keystore')
-            storePassword 'Pa$$w0rd%'
-            keyAlias 'ISRMobileApp'
-            keyPassword 'Pa$$w0rd%'
-        }
-    }
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
