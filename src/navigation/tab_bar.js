@@ -2,16 +2,16 @@ import {
   createAppContainer,
   createMaterialTopTabNavigator,
 } from 'react-navigation';
-import General from '../components/screens/editOpportunityScreen/general';
-import Active from '../components/screens/editOpportunityScreen/active';
-import Notes from '../components/screens/editOpportunityScreen/notes';
+import CreateOpportunity from '../components/screens/opportunities/create_opportunity';
+import OpportunityActivityList from '../components/screens/activity/opportunity_activity_list';
+import OpportunityNotesList from '../components/screens/notes/opportunity_notes_list';
 import Contact from '../components/screens/editOpportunityScreen/contact';
 
 const TabBar = createMaterialTopTabNavigator(
   {
-    General: {screen: General},
-    Activity: {screen: Active},
-    Notes: {screen: Notes},
+    General: {screen: CreateOpportunity},
+    Activity: {screen: OpportunityActivityList},
+    Notes: {screen: OpportunityNotesList},
     Contact: {screen: Contact},
   },
 

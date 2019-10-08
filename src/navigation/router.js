@@ -5,23 +5,57 @@ import {
   createSwitchNavigator,
   createDrawerNavigator,
   DrawerActions,
+  createMaterialTopTabNavigator,
 } from 'react-navigation';
 import React from 'react';
-import Accounts from '../components/screens/account';
+import AccountList from '../components/screens/accounts/account_list';
 import DashBoard from '../components/screens/dash_board';
 import Lead from '../components/screens/lead';
 import Login from '../components/login';
-import Opportunities from '../components/screens/opportunities';
+import OpportunityList from '../components/screens/opportunities/opportunity_list';
 import Images from '../assets/index';
 import {Image} from 'react-native';
 import images from '../assets/index';
 import EditOpportunityTabBar from './tab_bar';
-import CreateAccount from '../components/screens/create_accounts';
+import CreateAccount from '../components/screens/accounts/create_accounts';
 import AccountDetails from '../components/account_details';
-import Settings from '../components/screens/setting';
 import Filter from '../components/filter';
-import AccountList from '../components/screens/account_list';
-import CreateActivity from '../components/screens/editOpportunityScreen/create_activity';
+import RelationAccountList from '../components/screens/opportunities/relation_list';
+import CreateOpportunityActivity from '../components/screens/activity/create_opportunity_activity';
+
+import AccountNotesList from '../components/screens/notes/account_notes_list';
+import AccountActivityList from '../components/screens/activity/account_activity_list';
+import AccountAddressList from '../components/screens/address/account_address_list';
+import CreateAccountAddress from '../components/screens/address/create_account_address';
+import CreateAccountActivity from '../components/screens/activity/create_account_activity';
+
+const AccountDetailsTabs = createMaterialTopTabNavigator(
+  {
+    Address: {screen: AccountAddressList},
+    Activity: {screen: AccountActivityList},
+    Notes: {screen: AccountNotesList},
+  },
+
+  {
+    tabBarOptions: {
+      upperCaseLabel: false,
+      showIcon: true,
+      activeTintColor: 'black',
+      labelStyle: {
+        fontSize: 12,
+        margin: 0,
+        padding: 0,
+        fontWeight: 'bold',
+      },
+      tabStyle: {},
+      style: {
+        backgroundColor: 'rgb(220,220,220)',
+      },
+    },
+  },
+);
+
+const EditAccountTabBar = createAppContainer(AccountDetailsTabs);
 
 const AuthStack = createStackNavigator({
   Login: {screen: Login},
@@ -66,7 +100,7 @@ const tabNavigator = createBottomTabNavigator(
       },
     },
     Opportunities: {
-      screen: Opportunities,
+      screen: OpportunityList,
       navigationOptions: {
         tabBarIcon: ({tintColor}) =>
           tintColor != 'black' ? (
@@ -88,7 +122,7 @@ const tabNavigator = createBottomTabNavigator(
       },
     },
     Accounts: {
-      screen: Accounts,
+      screen: AccountList,
       navigationOptions: {
         tabBarIcon: ({tintColor}) =>
           tintColor != 'black' ? (
@@ -147,7 +181,6 @@ const TabsWithDrawer = createDrawerNavigator(
     drawerWidth: 300,
   },
 );
-// const MyDrawer = createAppContainer(Drawer);
 
 const AppStack = createStackNavigator(
   {
@@ -167,14 +200,18 @@ const AppStack = createStackNavigator(
         },
       }),
     },
-    Settings: {
-      screen: Settings,
+    EditAccount: {
+      screen: EditAccountTabBar,
       navigationOptions: ({navigation}) => ({
-        title: 'Settings',
+        title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
       }),
     },
-    AccountList: {
-      screen: AccountList,
+
+    SelectAccount: {
+      screen: RelationAccountList,
       navigationOptions: ({navigation}) => ({
         title: navigation.state.params.title,
 
@@ -184,7 +221,25 @@ const AppStack = createStackNavigator(
       }),
     },
     CreateActivity: {
-      screen: CreateActivity,
+      screen: CreateOpportunityActivity,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
+      }),
+    },
+    AccountActivity: {
+      screen: CreateAccountActivity,
+      navigationOptions: ({navigation}) => ({
+        title: navigation.state.params.title,
+        headerStyle: {
+          backgroundColor: 'rgb(255,217,25)',
+        },
+      }),
+    },
+    CreateAddress: {
+      screen: CreateAccountAddress,
       navigationOptions: ({navigation}) => ({
         title: navigation.state.params.title,
         headerStyle: {
@@ -212,7 +267,6 @@ const AppContainer = createAppContainer(
     {
       AuthStack: AuthStack,
       AppStack: AppStack,
-      // MyDrawer: MyDrawer,
     },
     {
       initialRouteName: 'AuthStack',

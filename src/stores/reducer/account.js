@@ -3,6 +3,7 @@ import * as ActionTypes from '../../action/types';
 const initialState = {
   accountList: [],
   accountId: '',
+  selectedAccount: '',
 };
 
 export default function accountReducer(state = initialState, action) {
@@ -12,6 +13,8 @@ export default function accountReducer(state = initialState, action) {
     case ActionTypes.DELET_ACCOUNTS:
       return action.payload;
     case ActionTypes.FETCH_ACCOUNTS:
+      return action.payload;
+    case ActionTypes.ACCOUNT_SELECTED:
       return action.payload;
     default:
       return state;

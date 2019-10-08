@@ -37,18 +37,6 @@ const AccountDetails = props => {
         </View>
       </View>
 
-      {/* <ListItem
-          onPress={() => {
-            this.props.navigation.navigate('Settings');
-            this.props.navigation.closeDrawer();
-          }}>
-          <Icon name="settings" style={styles.iconStyle} />
-          <Text style={styles.iconTitleStyle}>Settings</Text>
-        </ListItem>
-        <ListItem>
-          <Icon name="home" style={styles.iconStyle} />
-          <Text style={styles.iconTitleStyle}>Home</Text>
-        </ListItem> */}
       <ListItem
         onPress={() => {
           props.navigation.navigate('AuthStack');

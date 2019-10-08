@@ -1,6 +1,5 @@
 import React from 'react';
 import {Item, Label, Input, Text, Icon, Spinner} from 'native-base';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   View,
   TouchableOpacity,
@@ -8,7 +7,6 @@ import {
   ImageBackground,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from 'react-native';
 

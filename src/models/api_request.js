@@ -1,7 +1,7 @@
 export default class ApiRequest {
   Type;
-  urlType;
-  data;
+  end;
+  params;
   id;
-  actionType;
+  method;
 }

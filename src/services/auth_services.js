@@ -10,7 +10,7 @@ export default class AuthService {
     params.append('username', 'admin');
     params.append('password', 'gL4ovTIfoT3Z5papBMd2');
     params.append('grant_type', 'password');
-
+    console.log('control is');
     var response = await listingApi
       .post(APIConstants.AUTHENTICATION_URL, params)
       .then(response => {
@@ -19,6 +19,7 @@ export default class AuthService {
       .catch(error => {
         return error.response;
       });
+    console.log('response is....', response);
 
     if (response.data.access_token) {
       // AuthService.bidderNumber = response.data.data.bidderNumber;

@@ -5,9 +5,9 @@ export const APIConstants = {
 
   OPPORTUNITY_URL: '/api/Mobile/Opportunities',
 
-  NOTES_URL: '/api/Mobile/Accounts/{id}/Notes',
+  NOTES_URL: '/api/Mobile/Notes',
 
   SALESACTIVITY_URL: '/api/Mobile/SalesActivities',
 
-  ADDRESS_URL: 'api/Mobile/Addresses',
+  ADDRESS_URL: '/api/Mobile/Addresses',
 };

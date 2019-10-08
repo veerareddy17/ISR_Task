@@ -3,7 +3,7 @@ import * as ActionTypes from '../../action/types';
 const initialState = {
   opportunityList: [],
   selectedOpportunity: '',
-  opportunityId: 0,
+  opportunityId: '',
 };
 
 export default function opportunityReducer(state = initialState, action) {
@@ -14,8 +14,6 @@ export default function opportunityReducer(state = initialState, action) {
       return action.payload;
     case ActionTypes.CREAT_OPPORTTIES:
       return action.payload;
-    // case ActionTypes.OPPORTUNITIES_SELECTED:
-    //   return action.payload;
 
     default:
       return state;
