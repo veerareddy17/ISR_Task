@@ -100,7 +100,7 @@ class OpportunityNotesList extends Component {
                         }}>
                         {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
                         {/* <Text>Delete</Text> */}
-                        <Icon name="trash" style={{color: 'red'}} />
+                        <Icon name="trash" style={{color: color: 'black'}} />
                       </TouchableOpacity>
                     </Right>
                   </CardItem>

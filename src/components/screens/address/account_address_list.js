@@ -49,7 +49,7 @@ function AccountAddressList(props) {
                     }}>
                     {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
                     {/* <Text>Delete</Text> */}
-                    <Icon name="trash" style={{color: 'red'}} />
+                    <Icon name="trash" style={{color: 'black'}} />
                   </TouchableOpacity>
                 </Right>
               </CardItem>

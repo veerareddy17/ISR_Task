@@ -85,7 +85,7 @@ class AccountNotesList extends Component {
                           this.deleteNotes(item);
                         }}>
                         {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
-                        <Icon name="trash" style={{color: 'red'}} />
+                        <Icon name="trash" style={{color: 'black'}} />
                       </TouchableOpacity>
                     </Right>
                   </CardItem>
