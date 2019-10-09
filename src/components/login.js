@@ -62,7 +62,7 @@ function Login(props) {
                     editable={props.userState.editableInput}
                   />
                   {errors.email && (
-                    <Icon name="ios-close-circle" style={{color: 'red'}} />
+                    <Icon name="close-circle" style={{color: 'red'}} />
                   )}
                 </Item>
               </View>
@@ -87,7 +87,7 @@ function Login(props) {
                     active={false}
                     name={
                       errors.password
-                        ? 'ios-close-circle'
+                        ? 'close-circle'
                         : props.userState.togglePassword
                         ? 'eye-off'
                         : 'eye'
