@@ -126,7 +126,7 @@ class AccountList extends Component {
                             this.deleteNotes(item);
                           }}>
                           {/* <Text>Delete</Text> */}
-                          <Icon name="trash" style={{color: 'red'}} />
+                          <Icon name="trash" style={{color: 'black'}} />
                         </TouchableOpacity>
                       </Right>
                     </CardItem>
