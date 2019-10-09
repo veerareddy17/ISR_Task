@@ -1,6 +1,15 @@
 import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {Container, Fab, Card, Left} from 'native-base';
+import {
+  Container,
+  Fab,
+  Card,
+  Left,
+  CardItem,
+  Right,
+  Body,
+  Icon,
+} from 'native-base';
 import {connect} from 'react-redux';
 import {deleteAccountAddresses} from '../../../action/accounts';
 
@@ -24,30 +33,26 @@ function AccountAddressList(props) {
                 borderColor: 'rgb(249, 249, 69)',
                 borderLeftWidth: 10,
               }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <View>
-                  <Text style={{}}>{item.Title}</Text>
-                  <Text style={{}}>{item.City}</Text>
-                  <Text style={{}}>{item.State}</Text>
-                  <Text style={{}}>{item.Zip}</Text>
-                </View>
-              </View>
-              <Left>
-                <TouchableOpacity
-                  onPress={() => {
-                    // this.setState({selectedItem: item});
+              <CardItem>
+                <Left>
+                  <Body>
+                    <Text style={{}}>Title:{item.Title}</Text>
+                  </Body>
+                </Left>
+                <Right>
+                  <TouchableOpacity
+                    onPress={() => {
+                      // this.setState({selectedItem: item});
 
-                    // this.RBSheet.open();
-                    this.deleteNotes(item);
-                  }}>
-                  {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
-                  <Text>Delete</Text>
-                </TouchableOpacity>
-              </Left>
+                      // this.RBSheet.open();
+                      this.deleteNotes(item);
+                    }}>
+                    {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
+                    {/* <Text>Delete</Text> */}
+                    <Icon name="trash" style={{color: 'red'}} />
+                  </TouchableOpacity>
+                </Right>
+              </CardItem>
             </Card>
           );
         }}

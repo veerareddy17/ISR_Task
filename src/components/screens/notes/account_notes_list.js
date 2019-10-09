@@ -2,21 +2,19 @@ import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import React, {Component} from 'react';
 import {
   Container,
-  Button,
   Fab,
-  Footer,
-  FooterTab,
   CardItem,
   Card,
   Left,
-  Toast,
   Spinner,
+  Body,
+  Right,
+  Icon,
 } from 'native-base';
 import {connect} from 'react-redux';
 import {deleteAccountNotes} from '../../../action/accounts';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import CreateAccountNotes from './create_account_notes';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 class AccountNotesList extends Component {
   state = {
@@ -35,15 +33,6 @@ class AccountNotesList extends Component {
     this.RBSheetNew.open();
   };
   onSubmitNewNotes = () => {};
-  handleOnSubmit = async () => {
-    Toast.show({
-      text: 'create notes',
-      buttonText: 'Okay',
-      type: 'success',
-      position: 'center',
-    });
-    this.props.navigation.navigate('Tab');
-  };
   componentDidMount() {
     console.log(
       'whan i hit submit its once more its comming aa..=>',
@@ -81,26 +70,24 @@ class AccountNotesList extends Component {
               return (
                 <Card>
                   <CardItem>
-                    <Text>{item.Title}</Text>
-                  </CardItem>
-                  <CardItem>
-                    <Text>{item.Comments}</Text>
-                  </CardItem>
-                  <CardItem>
                     <Left>
-                      <Text>{item.Date}</Text>
+                      <Text>{item.Title}</Text>
                     </Left>
+                    <Body>
+                      <Text>{item.Comments}</Text>
+                    </Body>
+                    <Right>
+                      <TouchableOpacity
+                        onPress={() => {
+                          // this.setState({selectedItem: item});
 
-                    <TouchableOpacity
-                      onPress={() => {
-                        // this.setState({selectedItem: item});
-
-                        // this.RBSheet.open();
-                        this.deleteNotes(item);
-                      }}>
-                      {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
-                      <Text>Delete</Text>
-                    </TouchableOpacity>
+                          // this.RBSheet.open();
+                          this.deleteNotes(item);
+                        }}>
+                        {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
+                        <Icon name="trash" style={{color: 'red'}} />
+                      </TouchableOpacity>
+                    </Right>
                   </CardItem>
                 </Card>
               );
@@ -161,34 +148,6 @@ class AccountNotesList extends Component {
             />
           </RBSheet>
         </View>
-        <Footer
-          style={{marginBottom: 10, backgroundColor: 'white', elevation: 0}}>
-          <FooterTab style={{backgroundColor: 'white', elevation: 0}}>
-            <Button
-              success
-              full={true}
-              style={{
-                marginRight: 5,
-                borderRadius: 5,
-                marginLeft: 10,
-              }}
-              onPress={this.handleOnSubmit}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
-            </Button>
-            <Button
-              full={true}
-              danger
-              style={{
-                // backgroundColor: 'yellow',
-                marginRight: 10,
-                borderRadius: 5,
-                marginLeft: 5,
-              }}
-              onPress={() => this.props.navigation.navigate('Tab')}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }

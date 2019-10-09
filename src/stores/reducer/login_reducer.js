@@ -6,12 +6,15 @@ const initialState = {
   emailError: '',
   passwordError: '',
   togglePassword: true,
+  editableInput: true,
 };
 
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
     case ActionTypes.LOGIN_SUCCESS:
     case ActionTypes.LOGIN_FAILURE:
+      return action.payload;
+    case ActionTypes.LOGIN_EDITABLE:
       return action.payload;
     case ActionTypes.LOGIN_VALIDATION:
       return action.payload;

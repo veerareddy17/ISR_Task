@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {Container, Card} from 'native-base';
+import {Container, Card, CardItem, Left, Body} from 'native-base';
 import {createAccounts, fetchAccounts} from '../../../action/accounts';
 import {connect} from 'react-redux';
 
@@ -46,7 +46,34 @@ class RelationAccountList extends Component {
                       borderColor: 'rgb(249, 249, 69)',
                       borderLeftWidth: 10,
                     }}>
-                    <View
+                    <CardItem>
+                      <Left>
+                        {/* <Thumbnail source={{uri: 'Image URL'}} /> */}
+                        <View
+                          style={{
+                            height: 60,
+                            width: 60,
+                            borderRadius: 30,
+                            backgroundColor: 'grey',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            margin: 10,
+                          }}>
+                          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                            {item.FirstName[0]}
+                          </Text>
+                        </View>
+                      </Left>
+                      <Body>
+                        <Text style={{}}>
+                          {item.FirstName}
+                          {item.LastName}
+                        </Text>
+                        <Text style={{}}>{item.Email}</Text>
+                        <Text style={{}}>{item.Phone}</Text>
+                      </Body>
+                    </CardItem>
+                    {/* <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -81,7 +108,7 @@ class RelationAccountList extends Component {
                           <Text style={{}}>{item.Phone}</Text>
                         </View>
                       </View>
-                    </View>
+                    </View> */}
                   </Card>
                 </TouchableOpacity>
               );

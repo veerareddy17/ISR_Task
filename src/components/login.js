@@ -1,12 +1,20 @@
 import React from 'react';
-import {Item, Label, Input, Text, Icon, Spinner} from 'native-base';
+import {
+  Item,
+  Label,
+  Input,
+  Text,
+  Icon,
+  Spinner,
+  Header,
+  Left,
+} from 'native-base';
 import {
   View,
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
   Image,
-  Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -15,12 +23,13 @@ import {authenticate, togglePasswordVisibility} from '../action/login_action';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import useForm from 'react-hook-form';
+import StoreService from '../services/StoreService';
 
 Login.navigationOptions = {header: null};
 function Login(props) {
-  const {register, handleSubmit, setValue, errors} = useForm(); // initialise the hook
+  const {register, handleSubmit, setValue, errors} = useForm();
+
   const onSubmit = async data => {
-    Keyboard.dismiss();
     await props.requestLoginApi(data.email, data.password);
     if (props.userState.user.userName) props.navigation.navigate('AppStack');
   };
@@ -50,8 +59,11 @@ function Login(props) {
                     onChangeText={e => setValue('email', e)}
                     style={{color: 'white'}}
                     autoCapitalize="none"
+                    editable={props.userState.editableInput}
                   />
-                  {errors.email && <Icon name="add" style={{color: 'red'}} />}
+                  {errors.email && (
+                    <Icon name="ios-close-circle" style={{color: 'red'}} />
+                  )}
                 </Item>
               </View>
             </View>
@@ -68,27 +80,25 @@ function Login(props) {
                     onChangeText={e => setValue('password', e)}
                     secureTextEntry={props.userState.togglePassword}
                     style={{color: 'white'}}
+                    editable={props.userState.editableInput}
                   />
 
-                  {props.userState.togglePassword ? (
-                    <Icon
-                      active={false}
-                      name="eye-off"
-                      style={{color: 'white'}}
-                      onPress={() => props.togglePasswordAction()}
-                    />
-                  ) : (
-                    <Icon
-                      active={false}
-                      name="eye"
-                      style={{color: 'white'}}
-                      onPress={() => props.togglePasswordAction()}
-                    />
-                  )}
+                  <Icon
+                    active={false}
+                    name={
+                      errors.password
+                        ? 'ios-close-circle'
+                        : props.userState.togglePassword
+                        ? 'eye-off'
+                        : 'eye'
+                    }
+                    style={{color: errors.password ? 'red' : 'white'}}
+                    onPress={() => props.togglePasswordAction()}
+                  />
                 </Item>
-                <Text style={{color: 'red'}}>
+                {/* <Text style={{color: 'red'}}>
                   {errors.password && 'password is required'}
-                </Text>
+                </Text> */}
               </View>
             </View>
             <View style={styles.loginView}>

@@ -124,9 +124,9 @@ function CreateAccountActivity(props) {
               <Label style={styles.label}>Created</Label>
 
               <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
+                defaultDate={new Date(2019, 10, 7)}
+                minimumDate={new Date(2019, 1, 1)}
+                maximumDate={new Date(2019, 12, 31)}
                 locale={'en'}
                 timeZoneOffsetInMinutes={undefined}
                 modalTransparent={false}
@@ -148,9 +148,9 @@ function CreateAccountActivity(props) {
               <Label style={styles.label}>Due Date</Label>
 
               <DatePicker
-                defaultDate={new Date(2018, 4, 4)}
-                minimumDate={new Date(2018, 1, 1)}
-                maximumDate={new Date(2018, 12, 31)}
+                defaultDate={new Date(2019, 10, 7)}
+                minimumDate={new Date(2019, 1, 1)}
+                maximumDate={new Date(2019, 12, 31)}
                 locale={'en'}
                 timeZoneOffsetInMinutes={undefined}
                 modalTransparent={false}

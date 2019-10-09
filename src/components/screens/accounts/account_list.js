@@ -11,7 +11,16 @@ import {
 } from 'react-native';
 import Header from '../../header';
 import Images from '../../../assets/index';
-import {Container, Card, Fab, Left} from 'native-base';
+import {
+  Container,
+  Card,
+  Fab,
+  Left,
+  CardItem,
+  Body,
+  Right,
+  Icon,
+} from 'native-base';
 import {
   createAccounts,
   fetchAccounts,
@@ -85,7 +94,43 @@ class AccountList extends Component {
                       borderColor: 'rgb(249, 249, 69)',
                       borderLeftWidth: 10,
                     }}>
-                    <View
+                    <CardItem>
+                      <Left>
+                        {/* <Thumbnail source={{uri: 'Image URL'}} /> */}
+                        <View
+                          style={{
+                            height: 60,
+                            width: 60,
+                            borderRadius: 30,
+                            backgroundColor: 'grey',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            margin: 10,
+                          }}>
+                          <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                            {item.FirstName ? item.FirstName[0] : ''}
+                          </Text>
+                        </View>
+                      </Left>
+                      <Body>
+                        <Text style={{}}>
+                          {item.FirstName}
+                          {item.LastName}
+                        </Text>
+                        <Text style={{}}>{item.Email}</Text>
+                        <Text style={{}}>{item.Phone}</Text>
+                      </Body>
+                      <Right>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this.deleteNotes(item);
+                          }}>
+                          {/* <Text>Delete</Text> */}
+                          <Icon name="trash" style={{color: 'red'}} />
+                        </TouchableOpacity>
+                      </Right>
+                    </CardItem>
+                    {/* <View
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -128,7 +173,7 @@ class AccountList extends Component {
                         }}>
                         <Text>Delete</Text>
                       </TouchableOpacity>
-                    </Left>
+                    </Left> */}
                   </Card>
                 </TouchableWithoutFeedback>
               );

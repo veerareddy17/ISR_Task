@@ -59,14 +59,17 @@ export const createOpportunityGeneralAction = general => async (
   var opportunitState = {...getState().opportunityReducer};
   var generalData = general.data;
   var generalId = general.Id;
+
+  var ItemCategory = parseInt(generalData.ItemCategory, 10);
+  var Probability = parseInt(generalData.Probability, 10);
+  var ProjectedTotal = parseInt(generalData.ProjectedTotal, 10);
   var data = {
     AccountId: generalId,
     Details: generalData.Details,
     ExpectedCloseDate: generalData.ExpectedCloseDate,
-
-    ItemCategory: 3,
-    Probability: 6.1,
-    ProjectedTotal: 20,
+    ItemCategory: ItemCategory,
+    Probability: Probability,
+    ProjectedTotal: ProjectedTotal,
     Title: generalData.Title,
   };
   var Id = uuid.v1({
@@ -149,7 +152,7 @@ export const createOpportunityNotes = notesData => async (
 
     Title: notesData.Title,
     Comments: notesData.Comments,
-    Date: '2019-09-26T06:45:14.7098282+00:00',
+    Date: notesData.Date,
   };
 
   data.Id = Id;

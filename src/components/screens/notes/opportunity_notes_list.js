@@ -2,21 +2,20 @@ import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import React, {Component} from 'react';
 import {
   Container,
-  Button,
   Fab,
-  Footer,
-  FooterTab,
   CardItem,
   Card,
   Left,
-  Toast,
+  Right,
+  Body,
   Spinner,
+  Icon,
 } from 'native-base';
 import {connect} from 'react-redux';
 import {deleteOpportunityNotes} from '../../../action/opportunity';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import CreateOpportunityNotes from './create_opportunity_notes';
-import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 class OpportunityNotesList extends Component {
   state = {
@@ -44,17 +43,7 @@ class OpportunityNotesList extends Component {
     // this.setState({notes: this.state.notes.concat(newNotes)});
     // console.log('new notes he is create....=>,newNotes', newNotes);
   };
-  handleOnSubmit = async () => {
-    // await this.props.createOpportunityNoteAction(this.state.notes);
 
-    Toast.show({
-      text: 'create notes',
-      buttonText: 'Okay',
-      type: 'success',
-      position: 'center',
-    });
-    this.props.navigation.navigate('Tab');
-  };
   componentDidMount() {
     console.log(
       'whan i hit submit its once more its comming aa..=>',
@@ -76,12 +65,6 @@ class OpportunityNotesList extends Component {
     }
   }
   deleteNotes = async item => {
-    // var reqObject = {
-    //   Type: 'Notes',
-    //   end: APIConstants.NOTES_URL + '/' + item.Id,
-    //   params: '',
-    //   method: 'delete',
-    // };
     await this.props.deleteOpportunityNotes(item.Id);
   };
 
@@ -100,47 +83,26 @@ class OpportunityNotesList extends Component {
             renderItem={({item}) => {
               return (
                 <Card>
-                  {/* <CardItem>
-                  <Left>
-                    <Text>{item.parentOpportunity}</Text>
-                  </Left>
-                  <Text>{item.parentAccount}</Text>
-                </CardItem> */}
-                  <CardItem>
-                    <Text>{item.Title}</Text>
-                    {/* <Body>
-                      <Text>{item.comments}</Text>
-                    </Body> */}
-                  </CardItem>
-                  <CardItem>
-                    <Text>{item.Comments}</Text>
-                  </CardItem>
                   <CardItem>
                     <Left>
-                      <Text>{item.Date}</Text>
+                      <Text>{item.Title}</Text>
                     </Left>
+                    <Body>
+                      <Text>{item.Comments}</Text>
+                    </Body>
+                    <Right>
+                      <TouchableOpacity
+                        onPress={() => {
+                          // this.setState({selectedItem: item});
 
-                    {/* <TouchableOpacity
-                      onPress={() => {
-                        console.log(
-                          'data when i click each notes..is.....=>',
-                          item,
-                        );
-                        this.setState({selectedItem: item});
-                        this.RBSheet.open();
-                      }}>
-                      <Icon name="edit" style={{color: 'grey'}} size={30} />
-                    </TouchableOpacity> */}
-                    <TouchableOpacity
-                      onPress={() => {
-                        // this.setState({selectedItem: item});
-
-                        // this.RBSheet.open();
-                        this.deleteNotes(item);
-                      }}>
-                      {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
-                      <Text>Delete</Text>
-                    </TouchableOpacity>
+                          // this.RBSheet.open();
+                          this.deleteNotes(item);
+                        }}>
+                        {/* <Icon name="edit" style={{color: 'grey'}} size={30} /> */}
+                        {/* <Text>Delete</Text> */}
+                        <Icon name="trash" style={{color: 'red'}} />
+                      </TouchableOpacity>
+                    </Right>
                   </CardItem>
                 </Card>
               );
@@ -201,34 +163,6 @@ class OpportunityNotesList extends Component {
             />
           </RBSheet>
         </View>
-        <Footer
-          style={{marginBottom: 10, backgroundColor: 'white', elevation: 0}}>
-          <FooterTab style={{backgroundColor: 'white', elevation: 0}}>
-            <Button
-              success
-              full={true}
-              style={{
-                marginRight: 5,
-                borderRadius: 5,
-                marginLeft: 10,
-              }}
-              onPress={this.handleOnSubmit}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Save</Text>
-            </Button>
-            <Button
-              full={true}
-              danger
-              style={{
-                // backgroundColor: 'yellow',
-                marginRight: 10,
-                borderRadius: 5,
-                marginLeft: 5,
-              }}
-              onPress={() => this.props.navigation.navigate('Tab')}>
-              <Text style={{color: 'black', fontWeight: 'bold'}}>Cancel</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
       </Container>
     );
   }

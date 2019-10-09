@@ -28,6 +28,7 @@ import AccountActivityList from '../components/screens/activity/account_activity
 import AccountAddressList from '../components/screens/address/account_address_list';
 import CreateAccountAddress from '../components/screens/address/create_account_address';
 import CreateAccountActivity from '../components/screens/activity/create_account_activity';
+import Splash from '../components/screens/splash';
 
 const AccountDetailsTabs = createMaterialTopTabNavigator(
   {
@@ -59,6 +60,9 @@ const EditAccountTabBar = createAppContainer(AccountDetailsTabs);
 
 const AuthStack = createStackNavigator({
   Login: {screen: Login},
+});
+const SplashStack = createStackNavigator({
+  Splash: {screen: Splash},
 });
 
 const DashBoardWithFilterDrawer = createDrawerNavigator(
@@ -267,9 +271,10 @@ const AppContainer = createAppContainer(
     {
       AuthStack: AuthStack,
       AppStack: AppStack,
+      SplashStack: SplashStack,
     },
     {
-      initialRouteName: 'AuthStack',
+      initialRouteName: 'SplashStack',
     },
   ),
 );

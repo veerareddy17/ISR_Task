@@ -1,5 +1,3 @@
-import ApiService from '../services/api_service';
-
 import AuthService from '../services/auth_services';
 import * as ActionTypes from '../action/types';
 import {startLoading, stopLoading} from './common';
@@ -9,6 +7,11 @@ export const authenticate = (username, password) => async (
   getState,
 ) => {
   var authState = getState().auth;
+  authState.editableInput = !authState.editableInput;
+  dispatch({
+    type: ActionTypes.LOGIN_EDITABLE,
+    payload: authState,
+  });
   dispatch(startLoading);
   let request = {
     username: 'AuctionWebsiteUtility',
@@ -17,6 +20,7 @@ export const authenticate = (username, password) => async (
   };
 
   // const response = await ApiService.authenticate(username, password);
+
   const response = await AuthService.login(request);
   console.log('what is responce i a getting here...=>', response);
   console.log('error information is,.....=>', response.error_description);
