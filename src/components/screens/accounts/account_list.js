@@ -79,7 +79,10 @@ class AccountList extends Component {
           onWillFocus={() => fetchData()}
           onDidBlur={() => {}}></NavigationEvents> */}
         {this.props.isLoading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <View>
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text>Loading List...</Text>
+          </View>
         ) : (
           <FlatList
             keyExtractor={(item, index) => item.Id}
@@ -114,8 +117,7 @@ class AccountList extends Component {
                       </Left>
                       <Body>
                         <Text style={{}}>
-                          {item.FirstName}
-                          {item.LastName}
+                          {item.FirstName} {item.LastName}
                         </Text>
                         <Text style={{}}>{item.Email}</Text>
                         <Text style={{}}>{item.Phone}</Text>

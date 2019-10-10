@@ -4,6 +4,7 @@ const initialState = {
   opportunityList: [],
   selectedOpportunity: '',
   opportunityId: '',
+  probabilityValue: '5',
 };
 
 export default function opportunityReducer(state = initialState, action) {
@@ -13,6 +14,8 @@ export default function opportunityReducer(state = initialState, action) {
     case ActionTypes.OPPORTUNITIES_SELECTED:
       return action.payload;
     case ActionTypes.CREAT_OPPORTTIES:
+      return action.payload;
+    case ActionTypes.OPPORTUNITY_PROBABILITY_VALUE:
       return action.payload;
 
     default:

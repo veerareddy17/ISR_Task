@@ -274,3 +274,12 @@ export const createNewOpportunity = Id => (dispatch, getState) => {
     payload: opportunitState,
   });
 };
+
+export const chooseProbabilityValue = value => (dispatch, getState) => {
+  var opportunitState = {...getState().opportunityReducer};
+  opportunitState.probabilityValue = '10';
+  dispatch({
+    type: ActionTypes.OPPORTUNITY_PROBABILITY_VALUE,
+    payload: opportunitState,
+  });
+};

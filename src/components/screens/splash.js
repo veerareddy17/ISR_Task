@@ -9,7 +9,7 @@ class Splash extends React.Component {
   async componentDidMount() {
     try {
       const access_token = await StoreService.get('access_token');
-
+      const userName = await StoreService.get('userName');
       this.props.navigation.navigate(access_token ? 'AppStack' : 'AuthStack');
       props.navigation.navigate('AppStack');
     } catch (err) {}

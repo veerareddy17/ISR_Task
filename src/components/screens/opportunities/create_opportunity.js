@@ -15,6 +15,7 @@ import {
 import {
   selectedOpportunity,
   createOpportunityGeneralAction,
+  chooseProbabilityValue,
 } from '../../../action/opportunity';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -30,7 +31,7 @@ function CreateOpportunity(props) {
       ExpectedCloseDate: moment(general.ExpectedCloseDate).format('YYYY/MM/DD'),
       ProjectedTotal: general.ProjectedTotal,
       stage: general.stage,
-      Probability: '25',
+      Probability: general.Probability,
     },
   });
   var valuesData = getValues();
@@ -107,6 +108,7 @@ function CreateOpportunity(props) {
                 onValueChange={value => {
                   console.log('selected picker values is....=>', value);
                   // this.setState({opportunitiesType: value});
+                  props.chooseProbabilityValue(value);
                   setValue('opportunitiesType', value);
                 }}>
                 <Picker.Item label="customer" value="customer" />
@@ -117,6 +119,7 @@ function CreateOpportunity(props) {
           <Text style={styles.errorText}>
             {errors.opportunitiesType && 'Opportunity Type is required'}
           </Text>
+
           <Item DatePicker>
             <View>
               <Label style={styles.label}>Close Date</Label>
@@ -140,7 +143,18 @@ function CreateOpportunity(props) {
             </View>
           </Item>
         </View>
-
+        <Item floatingLabel style={styles.itemStyle}>
+          <Label style={styles.label}>Probability</Label>
+          <Input
+            style={styles.input}
+            value={props.selectedOpportunityCard.probabilityValue + '%'}
+            name="Probability"
+            ref={register({name: 'Probability'}, {required: true})}
+            placeholder="Probability"
+            editable={false}
+          />
+          {/* {this.renderProbability()} */}
+        </Item>
         <Item floatingLabel style={styles.itemStyle}>
           <Label style={styles.label}>Estimated Total</Label>
           <Input
@@ -213,5 +227,6 @@ export default connect(
   {
     selectedOpportunity,
     createOpportunityGeneralAction,
+    chooseProbabilityValue,
   },
 )(CreateOpportunity);

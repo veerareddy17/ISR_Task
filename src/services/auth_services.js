@@ -7,9 +7,9 @@ export default class AuthService {
 
   static async login(body) {
     const params = new URLSearchParams();
-    params.append('username', 'admin');
-    params.append('password', 'gL4ovTIfoT3Z5papBMd2');
-    params.append('grant_type', 'password');
+    params.append('username', body.username);
+    params.append('password', body.password);
+    params.append('grant_type', body.grant_type);
     console.log('control is');
     var response = await listingApi
       .post(APIConstants.AUTHENTICATION_URL, params)
@@ -25,6 +25,7 @@ export default class AuthService {
       // AuthService.bidderNumber = response.data.data.bidderNumber;
       // await StoreService.store('user', response.data.data);
       await StoreService.store('access_token', response.data.access_token);
+      await StoreService.store('userName', response.data.userName);
     }
     return response.data;
   }

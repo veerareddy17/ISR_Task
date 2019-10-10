@@ -64,20 +64,8 @@ function CreateAccountNotes(props) {
     };
 
     data.Id = Id;
-    // var reqObject = {
-    //   Type: 'Account',
-    //   end:
-    //     APIConstants.ACCOUNT_URL +
-    //     '/' +
-    //     props.selectedAccountCard.selectedAccount.Id +
-    //     '/Notes',
-    //   params: data,
-    //   method: 'post',
-    // };
+
     await props.createAccountNotes(data);
-
-    // await props.createAccountNoteAction(data);
-
     props.close();
   };
 

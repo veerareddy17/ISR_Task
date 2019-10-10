@@ -2,10 +2,7 @@ import AuthService from '../services/auth_services';
 import * as ActionTypes from '../action/types';
 import {startLoading, stopLoading} from './common';
 
-export const authenticate = (username, password) => async (
-  dispatch,
-  getState,
-) => {
+export const authenticate = data => async (dispatch, getState) => {
   var authState = getState().auth;
   authState.editableInput = !authState.editableInput;
   dispatch({
@@ -13,11 +10,13 @@ export const authenticate = (username, password) => async (
     payload: authState,
   });
   dispatch(startLoading);
-  let request = {
-    username: 'AuctionWebsiteUtility',
-    password: ' KXpaEJDebLU9SvlJswg6',
-    grant_type: 'password',
-  };
+  data.grant_type = 'password';
+  let request = data;
+  // let request = {
+  //   username: 'AuctionWebsiteUtility',
+  //   password: ' KXpaEJDebLU9SvlJswg6',
+  //   grant_type: 'password',
+  // };
 
   // const response = await ApiService.authenticate(username, password);
 
@@ -37,6 +36,7 @@ export const authenticate = (username, password) => async (
     });
     dispatch(stopLoading);
   } else {
+    authState.editableInput = !authState.editableInput;
     authState.error = response.error_description;
     dispatch({
       type: ActionTypes.LOGIN_FAILURE,
